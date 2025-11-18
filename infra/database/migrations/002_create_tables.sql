@@ -10,6 +10,7 @@ CREATE TABLE users (
     first_name  VARCHAR(100)    NOT NULL,
     last_name   VARCHAR(100)    NOT NULL,
     role        user_role       NOT NULL DEFAULT 'USER',
+    password    VARCHAR(255)    NOT NULL,
     created_at  TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );

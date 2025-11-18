@@ -4,15 +4,8 @@
 -- ===============================================
 
 -- Insert admin user
-INSERT INTO users(email, first_name, last_name, role)
-VALUES ('admin@library.com', 'Admin', 'User', 'ADMIN')
-ON CONFLICT (email) DO NOTHING;
-
--- Insert regular test users
-INSERT INTO users(email, first_name, last_name, role)
-VALUES 
-    ('john.doe@library.com', 'John', 'Doe', 'USER'),
-    ('jane.smith@library.com', 'Jane', 'Smith', 'USER')
+INSERT INTO users(email, first_name, last_name, role, password)
+VALUES ('admin@library.com', 'Admin', 'User', 'ADMIN', "password")
 ON CONFLICT (email) DO NOTHING;
 
 -- Log seed completion

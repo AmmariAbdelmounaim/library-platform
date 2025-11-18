@@ -5,7 +5,7 @@
 
 -- Users indexes
 CREATE INDEX idx_users_role ON users(role);
-
+CREATE INDEX idx_users_email ON users(email);
 -- Membership cards indexes
 CREATE INDEX idx_membership_cards_status_serial
     ON membership_cards (status, serial_number);

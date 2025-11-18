@@ -24,6 +24,7 @@ CREATE TABLE users (
     first_name  VARCHAR(100)    NOT NULL,
     last_name   VARCHAR(100)    NOT NULL,
     role        user_role       NOT NULL DEFAULT 'USER',
+    password   VARCHAR(255)     NOT NULL,
     created_at  TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );
@@ -92,6 +93,7 @@ CREATE TABLE loans (
 -- ========== INDEXES ==========
 
 -- Users indexes
+CREATE INDEX idx_users_role ON users(role);
 CREATE INDEX idx_users_role ON users(role);
 
 -- Membership cards indexes
