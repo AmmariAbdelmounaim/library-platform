@@ -9,7 +9,7 @@
     "target": "es2021",
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/db/**/*.ts"],
   "exclude": [
     "out-tsc",
     "dist",
