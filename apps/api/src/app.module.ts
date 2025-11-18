@@ -1,33 +1,33 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'node:path';
-import { existsSync } from 'node:fs';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './db/database.module';
-
-// Calculate path to root .env file
-// Try multiple possible locations
-const possiblePaths = [
-  resolve(__dirname, '..', '..', '..', '.env'), // From dist/ or src/
-  resolve(process.cwd(), '.env'), // From project root
-];
+import { DatabaseModule } from './db/db.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { MembershipCardsModule } from './membership-cards/membership-cards.module';
 
 // Find the first existing .env file
-const rootEnvPath =
-  possiblePaths.find((path) => existsSync(path)) || possiblePaths[0];
-
+const rootEnvPath = resolve(__dirname, '..', '..', '..', '.env');
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: rootEnvPath,
-      // Also load from process.env as fallback
-      load: [],
     }),
     DatabaseModule,
+    UsersModule,
+    AuthModule,
+    MembershipCardsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: Logger,
+      useFactory: () => new Logger(AppService.name),
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

@@ -224,6 +224,9 @@ export const membershipCards = pgTable(
   ],
 );
 
+export type MembershipCardRow = typeof membershipCards.$inferSelect;
+export type MembershipCardInsert = typeof membershipCards.$inferInsert;
+
 export const authors = pgTable(
   'authors',
   {
@@ -296,6 +299,9 @@ export const users = pgTable(
     }),
   ],
 );
+
+export type UserRow = typeof users.$inferSelect;
+export type UserInsert = typeof users.$inferInsert;
 
 export const bookAuthors = pgTable(
   'book_authors',

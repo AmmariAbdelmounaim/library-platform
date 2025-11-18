@@ -1,34 +1,71 @@
-import { config } from 'dotenv';
-import { resolve } from 'node:path';
-import { existsSync } from 'node:fs';
-
-// Load .env from root of project
-// Try multiple possible locations
-const possiblePaths = [
-  resolve(__dirname, '..', '..', '..', '.env'), // From dist/ or src/
-  resolve(process.cwd(), '.env'), // From project root
-];
-
-// Find the first existing .env file
-const rootEnvPath =
-  possiblePaths.find((path) => existsSync(path)) || possiblePaths[0];
-
-if (existsSync(rootEnvPath)) {
-  config({ path: rootEnvPath });
-}
-
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // Enable global validation pipe to validate input DTOs
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip properties that don't have decorators
+      forbidNonWhitelisted: true, // Throw error if non-whitelisted properties are present
+      transform: true, // Automatically transform payloads to DTO instances
+      transformOptions: {
+        enableImplicitConversion: true, // Allow implicit type conversion
+      },
+    }),
+  );
+
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), {
+      // Critical: strips properties that are not @Expose()'d in the target class
+      enableImplicitConversion: true,
+      excludeExtraneousValues: true,
+    }),
+  );
+
+  // Swagger configuration
+  const config = new DocumentBuilder()
+    .setTitle('Library Platform API')
+    .setDescription('API documentation for the Library Platform')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
+    .addTag('auth', 'Authentication endpoints')
+    .addTag('users', 'User management endpoints')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+  );
+  Logger.log(
+    `📚 Swagger documentation available at: http://localhost:${port}/api/docs`,
   );
 }
 
