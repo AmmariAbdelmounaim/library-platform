@@ -10,6 +10,7 @@ import { MembershipCardsModule } from './membership-cards/membership-cards.modul
 import { StartupService } from './startup/startup.service';
 import { BooksModule } from './books/books.module';
 import { AuthorsModule } from './authors/authors.module';
+import { LoansModule } from './loans/loans.module';
 
 // Find the first existing .env file
 const rootEnvPath = resolve(__dirname, '..', '..', '..', '.env');
@@ -25,6 +26,7 @@ const rootEnvPath = resolve(__dirname, '..', '..', '..', '.env');
     MembershipCardsModule,
     BooksModule,
     AuthorsModule,
+    LoansModule,
   ],
   controllers: [AppController],
   providers: [
