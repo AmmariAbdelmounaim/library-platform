@@ -113,7 +113,8 @@ export class AuthorWithBooksDto extends AuthorResponseDto {
   @Type(() => BookResponseDto)
   @ApiProperty({
     description: 'Books written by this author',
-    type: [BookResponseDto],
+    type: () => BookResponseDto,
+    isArray: true,
   })
   books: BookResponseDto[];
 }

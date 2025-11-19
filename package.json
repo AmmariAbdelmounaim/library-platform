@@ -24,7 +24,8 @@
     "test:client": "nx test client",
     "lint": "nx run-many --target=lint --all",
     "format": "nx format:write",
-    "format:check": "nx format:check"
+    "format:check": "nx format:check",
+    "generate:api": "cd apps/client && orval --config orval.config.ts"
   },
   "private": true,
   "devDependencies": {
@@ -111,10 +112,12 @@
     "class-validator": "^0.14.2",
     "drizzle-orm": "^0.44.7",
     "googleapis": "^166.0.0",
+    "orval": "^8.0.0-rc.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "postgres": "^3.4.7",
+    "@tanstack/react-query": "^5.90.10",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-router-dom": "7.9.6",
