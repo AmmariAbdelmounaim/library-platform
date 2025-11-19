@@ -19,8 +19,26 @@ export const customInstance = <T>(
   const promise = axios({
     ...axiosConfig,
     cancelToken: source.token,
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
-  }).then(({ data }) => data);
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  }).then((response) => {
+    // Orval expects a response object with data, status, and headers
+    // Convert axios headers to Web API Headers format
+    const headers = new Headers();
+    Object.entries(response.headers).forEach(([key, value]) => {
+      if (value) {
+        headers.set(
+          key,
+          Array.isArray(value) ? value.join(', ') : String(value),
+        );
+      }
+    });
+
+    return {
+      data: response.data,
+      status: response.status,
+      headers,
+    } as T;
+  });
 
   // @ts-expect-error - cancel is added dynamically for React Query cancellation
   promise.cancel = () => {

@@ -8,56 +8,106 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { createFileRoute } from '@tanstack/react-router'
 
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as protected_layoutRouteImport } from './routes/(protected)/__layout'
+import { Route as protectedUserIndexRouteImport } from './routes/(protected)/user/index'
+import { Route as protectedAdminIndexRouteImport } from './routes/(protected)/admin/index'
+import { Route as protectedUser_layoutRouteImport } from './routes/(protected)/user/__layout'
+import { Route as protectedAdmin_layoutRouteImport } from './routes/(protected)/admin/__layout'
+
+const protectedUserRouteImport = createFileRoute('/(protected)/user')()
+const protectedAdminRouteImport = createFileRoute('/(protected)/admin')()
+
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const protectedUserRoute = protectedUserRouteImport.update({
+  id: '/(protected)/user',
+  path: '/user',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const protectedAdminRoute = protectedAdminRouteImport.update({
+  id: '/(protected)/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const protected_layoutRoute = protected_layoutRouteImport.update({
+  id: '/(protected)/__layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const protectedUserIndexRoute = protectedUserIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => protectedUserRoute,
+} as any)
+const protectedAdminIndexRoute = protectedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => protectedAdminRoute,
+} as any)
+const protectedUser_layoutRoute = protectedUser_layoutRouteImport.update({
+  id: '/__layout',
+  getParentRoute: () => protectedUserRoute,
+} as any)
+const protectedAdmin_layoutRoute = protectedAdmin_layoutRouteImport.update({
+  id: '/__layout',
+  getParentRoute: () => protectedAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/admin': typeof protectedAdmin_layoutRoute
+  '/user': typeof protectedUser_layoutRoute
+  '/admin/': typeof protectedAdminIndexRoute
+  '/user/': typeof protectedUserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/admin': typeof protectedAdminIndexRoute
+  '/user': typeof protectedUserIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/(protected)/__layout': typeof protected_layoutRoute
+  '/(protected)/admin': typeof protectedAdminRouteWithChildren
+  '/(protected)/admin/__layout': typeof protectedAdmin_layoutRoute
+  '/(protected)/user': typeof protectedUserRouteWithChildren
+  '/(protected)/user/__layout': typeof protectedUser_layoutRoute
+  '/(protected)/admin/': typeof protectedAdminIndexRoute
+  '/(protected)/user/': typeof protectedUserIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/admin' | '/user' | '/admin/' | '/user/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/admin' | '/user'
+  id:
+    | '__root__'
+    | '/'
+    | '/(protected)/__layout'
+    | '/(protected)/admin'
+    | '/(protected)/admin/__layout'
+    | '/(protected)/user'
+    | '/(protected)/user/__layout'
+    | '/(protected)/admin/'
+    | '/(protected)/user/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  protected_layoutRoute: typeof protected_layoutRoute
+  protectedAdminRoute: typeof protectedAdminRouteWithChildren
+  protectedUserRoute: typeof protectedUserRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +115,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(protected)/user': {
+      id: '/(protected)/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof protectedUserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(protected)/admin': {
+      id: '/(protected)/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof protectedAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(protected)/__layout': {
+      id: '/(protected)/__layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof protected_layoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(protected)/user/': {
+      id: '/(protected)/user/'
+      path: '/'
+      fullPath: '/user/'
+      preLoaderRoute: typeof protectedUserIndexRouteImport
+      parentRoute: typeof protectedUserRoute
+    }
+    '/(protected)/admin/': {
+      id: '/(protected)/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof protectedAdminIndexRouteImport
+      parentRoute: typeof protectedAdminRoute
+    }
+    '/(protected)/user/__layout': {
+      id: '/(protected)/user/__layout'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof protectedUser_layoutRouteImport
+      parentRoute: typeof protectedUserRoute
+    }
+    '/(protected)/admin/__layout': {
+      id: '/(protected)/admin/__layout'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof protectedAdmin_layoutRouteImport
+      parentRoute: typeof protectedAdminRoute
+    }
   }
 }
 
+interface protectedAdminRouteChildren {
+  protectedAdmin_layoutRoute: typeof protectedAdmin_layoutRoute
+  protectedAdminIndexRoute: typeof protectedAdminIndexRoute
+}
+
+const protectedAdminRouteChildren: protectedAdminRouteChildren = {
+  protectedAdmin_layoutRoute: protectedAdmin_layoutRoute,
+  protectedAdminIndexRoute: protectedAdminIndexRoute,
+}
+
+const protectedAdminRouteWithChildren = protectedAdminRoute._addFileChildren(
+  protectedAdminRouteChildren,
+)
+
+interface protectedUserRouteChildren {
+  protectedUser_layoutRoute: typeof protectedUser_layoutRoute
+  protectedUserIndexRoute: typeof protectedUserIndexRoute
+}
+
+const protectedUserRouteChildren: protectedUserRouteChildren = {
+  protectedUser_layoutRoute: protectedUser_layoutRoute,
+  protectedUserIndexRoute: protectedUserIndexRoute,
+}
+
+const protectedUserRouteWithChildren = protectedUserRoute._addFileChildren(
+  protectedUserRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  protected_layoutRoute: protected_layoutRoute,
+  protectedAdminRoute: protectedAdminRouteWithChildren,
+  protectedUserRoute: protectedUserRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
