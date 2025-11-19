@@ -2,7 +2,6 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
-  Logger,
 } from '@nestjs/common';
 import { mapDto } from '../../utils/map-dto';
 import {
@@ -19,12 +18,10 @@ import { BooksRepository } from '../books.repository';
 import { GoogleBooksService } from './google-books.service';
 import { AuthorsRepository } from '../../authors/authors.repository';
 import { WithErrorHandling } from '../../utils/with-error-handling.decorator';
-import { google, type books_v1 } from 'googleapis';
+import { type books_v1 } from 'googleapis';
 
 @Injectable()
 export class BooksService {
-  private readonly logger = new Logger(BooksService.name);
-
   constructor(
     private readonly booksRepository: BooksRepository,
     private readonly googleBooksService: GoogleBooksService,
