@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import {
   getUsersControllerGetCurrentUserQueryKey,
@@ -64,6 +65,13 @@ export function ProfileForm() {
         setShowSuccess(true);
         // Hide success message after 3 seconds
         setTimeout(() => setShowSuccess(false), 3000);
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error('Failed to update profile', {
+          description:
+            errorMessage || 'An unexpected error occurred. Please try again.',
+        });
       },
     },
   });

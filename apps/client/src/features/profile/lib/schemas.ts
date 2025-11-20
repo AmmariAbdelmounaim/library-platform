@@ -6,10 +6,7 @@ import { z } from 'zod';
  */
 export const profileSchema = z
   .object({
-    email: z
-      .string()
-      .min(1, 'Email is required')
-      .email('Invalid email address'),
+    email: z.email('Email is required'),
     firstName: z
       .string()
       .min(2, 'First name must be at least 2 characters')

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
 import { useAuthControllerRegister } from '@/api/generated/auth/auth';
 import { registerSchema, type RegisterFormData } from '../lib/schemas';
 import { setAuthToken } from '../lib/auth-storage';
@@ -36,6 +37,13 @@ export function RegisterForm() {
           setAuthToken(accessToken);
           navigate({ to: '/user' });
         }
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error('Failed to create account', {
+          description:
+            errorMessage || 'An unexpected error occurred. Please try again.',
+        });
       },
     },
   });

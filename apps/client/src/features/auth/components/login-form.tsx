@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
 import { useAuthControllerLogin } from '@/api/generated/auth/auth';
 import { loginSchema, type LoginFormData } from '../lib/schemas';
 import { setAuthToken } from '../lib/auth-storage';
@@ -41,6 +42,13 @@ export function LoginForm() {
             navigate({ to: '/user' as any });
           }
         }
+      },
+      onError: (error) => {
+        const errorMessage = getErrorMessage(error);
+        toast.error('Failed to sign in', {
+          description:
+            errorMessage || 'Invalid email or password. Please try again.',
+        });
       },
     },
   });

@@ -1,13 +1,14 @@
+import { AdminLayout } from '@/components/layouts/admin-layout';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(protected)/admin')({
-  component: AdminLayout,
+  component: AdminLayoutRoute,
 });
 
-function AdminLayout() {
+function AdminLayoutRoute() {
   return (
-    <div>
+    <AdminLayout>
       <Outlet />
-    </div>
+    </AdminLayout>
   );
 }

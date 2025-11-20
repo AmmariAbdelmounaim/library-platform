@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 
 import { Link } from '@tanstack/react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   ColumnDef,
   flexRender,
@@ -18,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { asOptionalString, formatDate } from '@/features/books';
+import { getErrorMessage } from '@/lib/api-errors';
 
 import { useLoanBooks } from '../hooks/use-loan-books';
 
@@ -40,6 +42,14 @@ export function LoansTable({ loans }: LoansTableProps) {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
+          });
+          toast.success('Book returned successfully!');
+        },
+        onError: (error) => {
+          const errorMessage = getErrorMessage(error);
+          toast.error('Failed to return book', {
+            description:
+              errorMessage || 'An unexpected error occurred. Please try again.',
           });
         },
       },

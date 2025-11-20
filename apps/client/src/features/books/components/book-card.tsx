@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { Link } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 
 type BookCardProps = {
   book: BookResponseDto;
@@ -41,6 +41,12 @@ const formatDate = (value?: string) => {
 };
 
 export function BookCard({ book, className }: BookCardProps) {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const bookDetailRoute = isAdminRoute
+    ? '/admin/books/$bookId'
+    : '/user/books/$bookId';
+
   const title = asOptionalString(book.title) ?? 'Untitled book';
   const description =
     asOptionalString(book.description) ?? 'No description available.';
@@ -71,7 +77,7 @@ export function BookCard({ book, className }: BookCardProps) {
         <div className="flex-1 space-y-2">
           <CardTitle className="text-2xl">
             <Link
-              to="/user/books/$bookId"
+              to={bookDetailRoute}
               params={{ bookId: String(book.id) }}
               className="hover:underline"
             >

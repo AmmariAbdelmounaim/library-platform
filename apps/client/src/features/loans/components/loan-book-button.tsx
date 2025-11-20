@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 import {
   getLoansControllerFindMyOngoingLoansQueryKey,
@@ -7,6 +8,7 @@ import {
   useLoansControllerReturnLoan,
 } from '@/api/generated/loans/loans';
 import { Button } from '@/components/ui/button';
+import { getErrorMessage } from '@/lib/api-errors';
 
 interface LoanBookButtonProps {
   bookId: number;
@@ -32,6 +34,14 @@ export function LoanBookButton({ bookId }: LoanBookButtonProps) {
           queryClient.invalidateQueries({
             queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
           });
+          toast.success('Book loaned successfully!');
+        },
+        onError: (error) => {
+          const errorMessage = getErrorMessage(error);
+          toast.error('Failed to loan book', {
+            description:
+              errorMessage || 'An unexpected error occurred. Please try again.',
+          });
         },
       },
     });
@@ -42,6 +52,14 @@ export function LoanBookButton({ bookId }: LoanBookButtonProps) {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
+          });
+          toast.success('Book returned successfully!');
+        },
+        onError: (error) => {
+          const errorMessage = getErrorMessage(error);
+          toast.error('Failed to return book', {
+            description:
+              errorMessage || 'An unexpected error occurred. Please try again.',
           });
         },
       },
