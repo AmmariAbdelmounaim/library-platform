@@ -9,6 +9,7 @@ import {
   InvalidBookIdState,
   asOptionalString,
 } from '@/features/books';
+import { LoanBookButton } from '@/features/loans';
 
 export const Route = createFileRoute('/(protected)/user/books/$bookId/')({
   component: RouteComponent,
@@ -84,9 +85,14 @@ function RouteComponent() {
           <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
         </div>
 
-        <Button asChild variant="outline">
-          <Link to="/user/books">Back to catalog</Link>
-        </Button>
+        <div className="flex gap-2">
+          {isValidBookId && book ? (
+            <LoanBookButton bookId={numericBookId} />
+          ) : null}
+          <Button asChild variant="outline">
+            <Link to="/user/books">Back to catalog</Link>
+          </Button>
+        </div>
       </header>
 
       {content}

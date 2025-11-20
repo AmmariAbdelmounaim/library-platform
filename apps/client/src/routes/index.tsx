@@ -1,9 +1,37 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { LoginForm } from '@/features/auth/components/login-form';
 import { RegisterForm } from '@/features/auth/components/register-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getAuthToken } from '@/features/auth/lib/auth-storage';
+import { usersControllerGetCurrentUser } from '@/api/generated/users/users';
 
 export const Route = createFileRoute('/')({
+  beforeLoad: async () => {
+    const token = getAuthToken();
+
+    // Only check authentication if token exists
+    if (token) {
+      let user;
+      const response = await usersControllerGetCurrentUser();
+      // Check if the response is successful (status 200)
+      if ('data' in response && response.status === 200) {
+        user = response.data;
+      }
+
+      if (user) {
+        if (user.role === 'ADMIN') {
+          throw redirect({
+            to: '/admin',
+          });
+        } else if (user.role === 'USER') {
+          console.log('redirect to user');
+          throw redirect({
+            to: '/user',
+          });
+        }
+      }
+    }
+  },
   component: Index,
 });
 

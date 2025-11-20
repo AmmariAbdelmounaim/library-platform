@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { Link } from '@tanstack/react-router';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   ColumnDef,
   flexRender,
@@ -9,6 +10,11 @@ import {
 } from '@tanstack/react-table';
 
 import type { LoanResponseDto } from '@/api/generated/model';
+import {
+  getLoansControllerFindMyOngoingLoansQueryKey,
+  useLoansControllerReturnLoan,
+} from '@/api/generated/loans/loans';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { asOptionalString, formatDate } from '@/features/books';
@@ -24,40 +30,80 @@ type LoanRow = LoanResponseDto & {
   dueDisplay: string;
 };
 
-const columns: ColumnDef<LoanRow>[] = [
-  {
-    accessorKey: 'bookTitle',
-    header: () => 'Book',
-    cell: ({ row }) => {
-      const { bookId, bookTitle } = row.original;
-      if (!bookId) {
-        return <span className="text-muted-foreground">Unknown book</span>;
-      }
-
-      return (
-        <Link
-          to="/user/books/$bookId"
-          params={{ bookId: String(bookId) }}
-          className="text-primary font-medium hover:underline"
-        >
-          {bookTitle}
-        </Link>
-      );
-    },
-  },
-  {
-    accessorKey: 'dueDisplay',
-    header: () => 'Due date',
-    cell: ({ row }) => (
-      <span className="text-muted-foreground text-sm">
-        {row.original.dueDisplay}
-      </span>
-    ),
-  },
-];
-
 export function LoansTable({ loans }: LoansTableProps) {
   const { bookMap, isLoading: isLoadingBooks } = useLoanBooks(loans);
+  const queryClient = useQueryClient();
+
+  const { mutate: returnLoan, isPending: isReturning } =
+    useLoansControllerReturnLoan({
+      mutation: {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
+          });
+        },
+      },
+    });
+
+  const handleReturn = useCallback(
+    (loanId: number) => {
+      returnLoan({ id: loanId });
+    },
+    [returnLoan],
+  );
+
+  const columns: ColumnDef<LoanRow>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'bookTitle',
+        header: () => 'Book',
+        cell: ({ row }) => {
+          const { bookId, bookTitle } = row.original;
+          if (!bookId) {
+            return <span className="text-muted-foreground">Unknown book</span>;
+          }
+
+          return (
+            <Link
+              to="/user/books/$bookId"
+              params={{ bookId: String(bookId) }}
+              className="text-primary font-medium hover:underline"
+            >
+              {bookTitle}
+            </Link>
+          );
+        },
+      },
+      {
+        accessorKey: 'dueDisplay',
+        header: () => 'Due date',
+        cell: ({ row }) => (
+          <span className="text-muted-foreground text-sm">
+            {row.original.dueDisplay}
+          </span>
+        ),
+      },
+      {
+        id: 'actions',
+        header: () => 'Actions',
+        cell: ({ row }) => {
+          const loanId = row.original.id;
+          return (
+            <Button
+              onClick={() => handleReturn(loanId)}
+              disabled={isReturning}
+              variant="outline"
+              size="sm"
+            >
+              {isReturning ? 'Returning...' : 'Return'}
+            </Button>
+          );
+        },
+      },
+    ],
+    [handleReturn, isReturning],
+  );
+
   const data = useMemo(
     () =>
       loans.map((loan) => {
@@ -150,6 +196,9 @@ export function LoansTableSkeleton() {
               <th className="text-muted-foreground px-4 py-3 text-left font-medium">
                 Due date
               </th>
+              <th className="text-muted-foreground px-4 py-3 text-left font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -160,6 +209,9 @@ export function LoansTableSkeleton() {
                 </td>
                 <td className="px-4 py-3">
                   <Skeleton className="h-4 w-32" />
+                </td>
+                <td className="px-4 py-3">
+                  <Skeleton className="h-8 w-20" />
                 </td>
               </tr>
             ))}

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Link, useLocation } from '@tanstack/react-router';
-import { Book, FileText, User } from 'lucide-react';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+import { Book, FileText, User, LogOut } from 'lucide-react';
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -16,6 +17,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
+import { removeAuthToken } from '@/features/auth/lib/auth-storage';
 
 const menuItems = [
   {
@@ -41,6 +44,12 @@ interface UserLayoutProps {
 
 export function UserLayout({ children }: UserLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removeAuthToken();
+    navigate({ to: '/' });
+  };
 
   return (
     <SidebarProvider>
@@ -78,6 +87,16 @@ export function UserLayout({ children }: UserLayoutProps) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
+        <SidebarFooter>
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
+            onClick={handleLogout}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log Out</span>
+          </Button>
+        </SidebarFooter>
       </Sidebar>
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">

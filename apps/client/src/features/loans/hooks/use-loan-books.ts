@@ -31,17 +31,24 @@ export function useLoanBooks(loans: LoanResponseDto[]) {
           ),
   });
 
+  // Extract just the data values for stable comparison
+  const bookDataArray = useMemo(
+    () => uniqueBookIds.map((bookId, index) => bookQueries[index]?.data),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [uniqueBookIds, ...bookQueries.map((q) => q.data)],
+  );
+
   const bookMap = useMemo<
     Map<number, booksControllerFindOneResponse200['data']>
   >(() => {
     return uniqueBookIds.reduce((acc, bookId, index) => {
-      const data = bookQueries[index]?.data;
+      const data = bookDataArray[index];
       if (data) {
         acc.set(bookId, data);
       }
       return acc;
     }, new Map<number, booksControllerFindOneResponse200['data']>());
-  }, [bookQueries, uniqueBookIds]);
+  }, [bookDataArray, uniqueBookIds]);
 
   const isLoading = bookQueries.some((query) => query.isLoading);
   const isFetching = bookQueries.some((query) => query.isFetching);
