@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
-import { Book, FileText, LogOut } from 'lucide-react';
+import { Book, FileText, LogOut, Users } from 'lucide-react';
 
 import {
   Sidebar,
@@ -25,6 +25,11 @@ const menuItems = [
     title: 'Books',
     url: '/admin/books',
     icon: Book,
+  },
+  {
+    title: 'Authors',
+    url: '/admin/authors',
+    icon: Users,
   },
   {
     title: 'Loans',

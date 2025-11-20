@@ -16,9 +16,12 @@ import { Route as protectedUserProfileIndexRouteImport } from './routes/(protect
 import { Route as protectedUserLoansIndexRouteImport } from './routes/(protected)/user/loans/index'
 import { Route as protectedUserBooksIndexRouteImport } from './routes/(protected)/user/books/index'
 import { Route as protectedAdminBooksIndexRouteImport } from './routes/(protected)/admin/books/index'
+import { Route as protectedAdminAuthorsIndexRouteImport } from './routes/(protected)/admin/authors/index'
 import { Route as protectedUserBooksBookIdIndexRouteImport } from './routes/(protected)/user/books/$bookId/index'
 import { Route as protectedAdminBooksAddIndexRouteImport } from './routes/(protected)/admin/books/add/index'
 import { Route as protectedAdminBooksBookIdIndexRouteImport } from './routes/(protected)/admin/books/$bookId/index'
+import { Route as protectedAdminAuthorsAddIndexRouteImport } from './routes/(protected)/admin/authors/add/index'
+import { Route as protectedAdminAuthorsAuthorIdIndexRouteImport } from './routes/(protected)/admin/authors/$authorId/index'
 import { Route as protectedAdminBooksBookIdEditIndexRouteImport } from './routes/(protected)/admin/books/$bookId/edit/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +61,12 @@ const protectedAdminBooksIndexRoute =
     path: '/books/',
     getParentRoute: () => protectedAdminRouteRoute,
   } as any)
+const protectedAdminAuthorsIndexRoute =
+  protectedAdminAuthorsIndexRouteImport.update({
+    id: '/authors/',
+    path: '/authors/',
+    getParentRoute: () => protectedAdminRouteRoute,
+  } as any)
 const protectedUserBooksBookIdIndexRoute =
   protectedUserBooksBookIdIndexRouteImport.update({
     id: '/books/$bookId/',
@@ -76,6 +85,18 @@ const protectedAdminBooksBookIdIndexRoute =
     path: '/books/$bookId/',
     getParentRoute: () => protectedAdminRouteRoute,
   } as any)
+const protectedAdminAuthorsAddIndexRoute =
+  protectedAdminAuthorsAddIndexRouteImport.update({
+    id: '/authors/add/',
+    path: '/authors/add/',
+    getParentRoute: () => protectedAdminRouteRoute,
+  } as any)
+const protectedAdminAuthorsAuthorIdIndexRoute =
+  protectedAdminAuthorsAuthorIdIndexRouteImport.update({
+    id: '/authors/$authorId/',
+    path: '/authors/$authorId/',
+    getParentRoute: () => protectedAdminRouteRoute,
+  } as any)
 const protectedAdminBooksBookIdEditIndexRoute =
   protectedAdminBooksBookIdEditIndexRouteImport.update({
     id: '/books/$bookId/edit/',
@@ -87,10 +108,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof protectedAdminRouteRouteWithChildren
   '/user': typeof protectedUserRouteRouteWithChildren
+  '/admin/authors': typeof protectedAdminAuthorsIndexRoute
   '/admin/books': typeof protectedAdminBooksIndexRoute
   '/user/books': typeof protectedUserBooksIndexRoute
   '/user/loans': typeof protectedUserLoansIndexRoute
   '/user/profile': typeof protectedUserProfileIndexRoute
+  '/admin/authors/$authorId': typeof protectedAdminAuthorsAuthorIdIndexRoute
+  '/admin/authors/add': typeof protectedAdminAuthorsAddIndexRoute
   '/admin/books/$bookId': typeof protectedAdminBooksBookIdIndexRoute
   '/admin/books/add': typeof protectedAdminBooksAddIndexRoute
   '/user/books/$bookId': typeof protectedUserBooksBookIdIndexRoute
@@ -100,10 +124,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof protectedAdminRouteRouteWithChildren
   '/user': typeof protectedUserRouteRouteWithChildren
+  '/admin/authors': typeof protectedAdminAuthorsIndexRoute
   '/admin/books': typeof protectedAdminBooksIndexRoute
   '/user/books': typeof protectedUserBooksIndexRoute
   '/user/loans': typeof protectedUserLoansIndexRoute
   '/user/profile': typeof protectedUserProfileIndexRoute
+  '/admin/authors/$authorId': typeof protectedAdminAuthorsAuthorIdIndexRoute
+  '/admin/authors/add': typeof protectedAdminAuthorsAddIndexRoute
   '/admin/books/$bookId': typeof protectedAdminBooksBookIdIndexRoute
   '/admin/books/add': typeof protectedAdminBooksAddIndexRoute
   '/user/books/$bookId': typeof protectedUserBooksBookIdIndexRoute
@@ -114,10 +141,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(protected)/admin': typeof protectedAdminRouteRouteWithChildren
   '/(protected)/user': typeof protectedUserRouteRouteWithChildren
+  '/(protected)/admin/authors/': typeof protectedAdminAuthorsIndexRoute
   '/(protected)/admin/books/': typeof protectedAdminBooksIndexRoute
   '/(protected)/user/books/': typeof protectedUserBooksIndexRoute
   '/(protected)/user/loans/': typeof protectedUserLoansIndexRoute
   '/(protected)/user/profile/': typeof protectedUserProfileIndexRoute
+  '/(protected)/admin/authors/$authorId/': typeof protectedAdminAuthorsAuthorIdIndexRoute
+  '/(protected)/admin/authors/add/': typeof protectedAdminAuthorsAddIndexRoute
   '/(protected)/admin/books/$bookId/': typeof protectedAdminBooksBookIdIndexRoute
   '/(protected)/admin/books/add/': typeof protectedAdminBooksAddIndexRoute
   '/(protected)/user/books/$bookId/': typeof protectedUserBooksBookIdIndexRoute
@@ -129,10 +159,13 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/user'
+    | '/admin/authors'
     | '/admin/books'
     | '/user/books'
     | '/user/loans'
     | '/user/profile'
+    | '/admin/authors/$authorId'
+    | '/admin/authors/add'
     | '/admin/books/$bookId'
     | '/admin/books/add'
     | '/user/books/$bookId'
@@ -142,10 +175,13 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/user'
+    | '/admin/authors'
     | '/admin/books'
     | '/user/books'
     | '/user/loans'
     | '/user/profile'
+    | '/admin/authors/$authorId'
+    | '/admin/authors/add'
     | '/admin/books/$bookId'
     | '/admin/books/add'
     | '/user/books/$bookId'
@@ -155,10 +191,13 @@ export interface FileRouteTypes {
     | '/'
     | '/(protected)/admin'
     | '/(protected)/user'
+    | '/(protected)/admin/authors/'
     | '/(protected)/admin/books/'
     | '/(protected)/user/books/'
     | '/(protected)/user/loans/'
     | '/(protected)/user/profile/'
+    | '/(protected)/admin/authors/$authorId/'
+    | '/(protected)/admin/authors/add/'
     | '/(protected)/admin/books/$bookId/'
     | '/(protected)/admin/books/add/'
     | '/(protected)/user/books/$bookId/'
@@ -222,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof protectedAdminBooksIndexRouteImport
       parentRoute: typeof protectedAdminRouteRoute
     }
+    '/(protected)/admin/authors/': {
+      id: '/(protected)/admin/authors/'
+      path: '/authors'
+      fullPath: '/admin/authors'
+      preLoaderRoute: typeof protectedAdminAuthorsIndexRouteImport
+      parentRoute: typeof protectedAdminRouteRoute
+    }
     '/(protected)/user/books/$bookId/': {
       id: '/(protected)/user/books/$bookId/'
       path: '/books/$bookId'
@@ -243,6 +289,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof protectedAdminBooksBookIdIndexRouteImport
       parentRoute: typeof protectedAdminRouteRoute
     }
+    '/(protected)/admin/authors/add/': {
+      id: '/(protected)/admin/authors/add/'
+      path: '/authors/add'
+      fullPath: '/admin/authors/add'
+      preLoaderRoute: typeof protectedAdminAuthorsAddIndexRouteImport
+      parentRoute: typeof protectedAdminRouteRoute
+    }
+    '/(protected)/admin/authors/$authorId/': {
+      id: '/(protected)/admin/authors/$authorId/'
+      path: '/authors/$authorId'
+      fullPath: '/admin/authors/$authorId'
+      preLoaderRoute: typeof protectedAdminAuthorsAuthorIdIndexRouteImport
+      parentRoute: typeof protectedAdminRouteRoute
+    }
     '/(protected)/admin/books/$bookId/edit/': {
       id: '/(protected)/admin/books/$bookId/edit/'
       path: '/books/$bookId/edit'
@@ -254,14 +314,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface protectedAdminRouteRouteChildren {
+  protectedAdminAuthorsIndexRoute: typeof protectedAdminAuthorsIndexRoute
   protectedAdminBooksIndexRoute: typeof protectedAdminBooksIndexRoute
+  protectedAdminAuthorsAuthorIdIndexRoute: typeof protectedAdminAuthorsAuthorIdIndexRoute
+  protectedAdminAuthorsAddIndexRoute: typeof protectedAdminAuthorsAddIndexRoute
   protectedAdminBooksBookIdIndexRoute: typeof protectedAdminBooksBookIdIndexRoute
   protectedAdminBooksAddIndexRoute: typeof protectedAdminBooksAddIndexRoute
   protectedAdminBooksBookIdEditIndexRoute: typeof protectedAdminBooksBookIdEditIndexRoute
 }
 
 const protectedAdminRouteRouteChildren: protectedAdminRouteRouteChildren = {
+  protectedAdminAuthorsIndexRoute: protectedAdminAuthorsIndexRoute,
   protectedAdminBooksIndexRoute: protectedAdminBooksIndexRoute,
+  protectedAdminAuthorsAuthorIdIndexRoute:
+    protectedAdminAuthorsAuthorIdIndexRoute,
+  protectedAdminAuthorsAddIndexRoute: protectedAdminAuthorsAddIndexRoute,
   protectedAdminBooksBookIdIndexRoute: protectedAdminBooksBookIdIndexRoute,
   protectedAdminBooksAddIndexRoute: protectedAdminBooksAddIndexRoute,
   protectedAdminBooksBookIdEditIndexRoute:
