@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
+import { getAuthToken } from '@/features/auth/lib/auth-storage';
+
 // Create a custom axios instance with default configuration
 // Matches Orval's expected signature: (url: string, options?: RequestInit) => Promise<T>
 export const customInstance = <T>(
@@ -9,10 +11,22 @@ export const customInstance = <T>(
   const source = axios.CancelToken.source();
 
   // Convert RequestInit to axios format
+  const headers = new Headers(options?.headers);
+  const token = getAuthToken();
+
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  const headerObject: Record<string, string> = {};
+  headers.forEach((value, key) => {
+    headerObject[key] = value;
+  });
+
   const axiosConfig = {
     url: config,
     method: options?.method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
-    headers: options?.headers as Record<string, string> | undefined,
+    headers: headerObject,
     data: options?.body,
   };
 

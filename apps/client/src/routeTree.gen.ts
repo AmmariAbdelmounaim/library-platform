@@ -8,102 +8,125 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as protected_layoutRouteImport } from './routes/(protected)/__layout'
-import { Route as protectedUserIndexRouteImport } from './routes/(protected)/user/index'
+import { Route as protectedUserRouteRouteImport } from './routes/(protected)/user/route'
+import { Route as protectedAdminRouteRouteImport } from './routes/(protected)/admin/route'
 import { Route as protectedAdminIndexRouteImport } from './routes/(protected)/admin/index'
-import { Route as protectedUser_layoutRouteImport } from './routes/(protected)/user/__layout'
-import { Route as protectedAdmin_layoutRouteImport } from './routes/(protected)/admin/__layout'
-
-const protectedUserRouteImport = createFileRoute('/(protected)/user')()
-const protectedAdminRouteImport = createFileRoute('/(protected)/admin')()
+import { Route as protectedUserProfileIndexRouteImport } from './routes/(protected)/user/profile/index'
+import { Route as protectedUserLoansIndexRouteImport } from './routes/(protected)/user/loans/index'
+import { Route as protectedUserBooksIndexRouteImport } from './routes/(protected)/user/books/index'
+import { Route as protectedUserBooksBookIdIndexRouteImport } from './routes/(protected)/user/books/$bookId/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const protectedUserRoute = protectedUserRouteImport.update({
+const protectedUserRouteRoute = protectedUserRouteRouteImport.update({
   id: '/(protected)/user',
   path: '/user',
   getParentRoute: () => rootRouteImport,
 } as any)
-const protectedAdminRoute = protectedAdminRouteImport.update({
+const protectedAdminRouteRoute = protectedAdminRouteRouteImport.update({
   id: '/(protected)/admin',
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const protected_layoutRoute = protected_layoutRouteImport.update({
-  id: '/(protected)/__layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const protectedUserIndexRoute = protectedUserIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => protectedUserRoute,
-} as any)
 const protectedAdminIndexRoute = protectedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => protectedAdminRoute,
+  getParentRoute: () => protectedAdminRouteRoute,
 } as any)
-const protectedUser_layoutRoute = protectedUser_layoutRouteImport.update({
-  id: '/__layout',
-  getParentRoute: () => protectedUserRoute,
+const protectedUserProfileIndexRoute =
+  protectedUserProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => protectedUserRouteRoute,
+  } as any)
+const protectedUserLoansIndexRoute = protectedUserLoansIndexRouteImport.update({
+  id: '/loans/',
+  path: '/loans/',
+  getParentRoute: () => protectedUserRouteRoute,
 } as any)
-const protectedAdmin_layoutRoute = protectedAdmin_layoutRouteImport.update({
-  id: '/__layout',
-  getParentRoute: () => protectedAdminRoute,
+const protectedUserBooksIndexRoute = protectedUserBooksIndexRouteImport.update({
+  id: '/books/',
+  path: '/books/',
+  getParentRoute: () => protectedUserRouteRoute,
 } as any)
+const protectedUserBooksBookIdIndexRoute =
+  protectedUserBooksBookIdIndexRouteImport.update({
+    id: '/books/$bookId/',
+    path: '/books/$bookId/',
+    getParentRoute: () => protectedUserRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof protectedAdmin_layoutRoute
-  '/user': typeof protectedUser_layoutRoute
+  '/admin': typeof protectedAdminRouteRouteWithChildren
+  '/user': typeof protectedUserRouteRouteWithChildren
   '/admin/': typeof protectedAdminIndexRoute
-  '/user/': typeof protectedUserIndexRoute
+  '/user/books': typeof protectedUserBooksIndexRoute
+  '/user/loans': typeof protectedUserLoansIndexRoute
+  '/user/profile': typeof protectedUserProfileIndexRoute
+  '/user/books/$bookId': typeof protectedUserBooksBookIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/user': typeof protectedUserRouteRouteWithChildren
   '/admin': typeof protectedAdminIndexRoute
-  '/user': typeof protectedUserIndexRoute
+  '/user/books': typeof protectedUserBooksIndexRoute
+  '/user/loans': typeof protectedUserLoansIndexRoute
+  '/user/profile': typeof protectedUserProfileIndexRoute
+  '/user/books/$bookId': typeof protectedUserBooksBookIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/(protected)/__layout': typeof protected_layoutRoute
-  '/(protected)/admin': typeof protectedAdminRouteWithChildren
-  '/(protected)/admin/__layout': typeof protectedAdmin_layoutRoute
-  '/(protected)/user': typeof protectedUserRouteWithChildren
-  '/(protected)/user/__layout': typeof protectedUser_layoutRoute
+  '/(protected)/admin': typeof protectedAdminRouteRouteWithChildren
+  '/(protected)/user': typeof protectedUserRouteRouteWithChildren
   '/(protected)/admin/': typeof protectedAdminIndexRoute
-  '/(protected)/user/': typeof protectedUserIndexRoute
+  '/(protected)/user/books/': typeof protectedUserBooksIndexRoute
+  '/(protected)/user/loans/': typeof protectedUserLoansIndexRoute
+  '/(protected)/user/profile/': typeof protectedUserProfileIndexRoute
+  '/(protected)/user/books/$bookId/': typeof protectedUserBooksBookIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/user' | '/admin/' | '/user/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/user'
+    | '/admin/'
+    | '/user/books'
+    | '/user/loans'
+    | '/user/profile'
+    | '/user/books/$bookId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/user'
+  to:
+    | '/'
+    | '/user'
+    | '/admin'
+    | '/user/books'
+    | '/user/loans'
+    | '/user/profile'
+    | '/user/books/$bookId'
   id:
     | '__root__'
     | '/'
-    | '/(protected)/__layout'
     | '/(protected)/admin'
-    | '/(protected)/admin/__layout'
     | '/(protected)/user'
-    | '/(protected)/user/__layout'
     | '/(protected)/admin/'
-    | '/(protected)/user/'
+    | '/(protected)/user/books/'
+    | '/(protected)/user/loans/'
+    | '/(protected)/user/profile/'
+    | '/(protected)/user/books/$bookId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  protected_layoutRoute: typeof protected_layoutRoute
-  protectedAdminRoute: typeof protectedAdminRouteWithChildren
-  protectedUserRoute: typeof protectedUserRouteWithChildren
+  protectedAdminRouteRoute: typeof protectedAdminRouteRouteWithChildren
+  protectedUserRouteRoute: typeof protectedUserRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -119,87 +142,86 @@ declare module '@tanstack/react-router' {
       id: '/(protected)/user'
       path: '/user'
       fullPath: '/user'
-      preLoaderRoute: typeof protectedUserRouteImport
+      preLoaderRoute: typeof protectedUserRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(protected)/admin': {
       id: '/(protected)/admin'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof protectedAdminRouteImport
+      preLoaderRoute: typeof protectedAdminRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/(protected)/__layout': {
-      id: '/(protected)/__layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof protected_layoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(protected)/user/': {
-      id: '/(protected)/user/'
-      path: '/'
-      fullPath: '/user/'
-      preLoaderRoute: typeof protectedUserIndexRouteImport
-      parentRoute: typeof protectedUserRoute
     }
     '/(protected)/admin/': {
       id: '/(protected)/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof protectedAdminIndexRouteImport
-      parentRoute: typeof protectedAdminRoute
+      parentRoute: typeof protectedAdminRouteRoute
     }
-    '/(protected)/user/__layout': {
-      id: '/(protected)/user/__layout'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof protectedUser_layoutRouteImport
-      parentRoute: typeof protectedUserRoute
+    '/(protected)/user/profile/': {
+      id: '/(protected)/user/profile/'
+      path: '/profile'
+      fullPath: '/user/profile'
+      preLoaderRoute: typeof protectedUserProfileIndexRouteImport
+      parentRoute: typeof protectedUserRouteRoute
     }
-    '/(protected)/admin/__layout': {
-      id: '/(protected)/admin/__layout'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof protectedAdmin_layoutRouteImport
-      parentRoute: typeof protectedAdminRoute
+    '/(protected)/user/loans/': {
+      id: '/(protected)/user/loans/'
+      path: '/loans'
+      fullPath: '/user/loans'
+      preLoaderRoute: typeof protectedUserLoansIndexRouteImport
+      parentRoute: typeof protectedUserRouteRoute
+    }
+    '/(protected)/user/books/': {
+      id: '/(protected)/user/books/'
+      path: '/books'
+      fullPath: '/user/books'
+      preLoaderRoute: typeof protectedUserBooksIndexRouteImport
+      parentRoute: typeof protectedUserRouteRoute
+    }
+    '/(protected)/user/books/$bookId/': {
+      id: '/(protected)/user/books/$bookId/'
+      path: '/books/$bookId'
+      fullPath: '/user/books/$bookId'
+      preLoaderRoute: typeof protectedUserBooksBookIdIndexRouteImport
+      parentRoute: typeof protectedUserRouteRoute
     }
   }
 }
 
-interface protectedAdminRouteChildren {
-  protectedAdmin_layoutRoute: typeof protectedAdmin_layoutRoute
+interface protectedAdminRouteRouteChildren {
   protectedAdminIndexRoute: typeof protectedAdminIndexRoute
 }
 
-const protectedAdminRouteChildren: protectedAdminRouteChildren = {
-  protectedAdmin_layoutRoute: protectedAdmin_layoutRoute,
+const protectedAdminRouteRouteChildren: protectedAdminRouteRouteChildren = {
   protectedAdminIndexRoute: protectedAdminIndexRoute,
 }
 
-const protectedAdminRouteWithChildren = protectedAdminRoute._addFileChildren(
-  protectedAdminRouteChildren,
-)
+const protectedAdminRouteRouteWithChildren =
+  protectedAdminRouteRoute._addFileChildren(protectedAdminRouteRouteChildren)
 
-interface protectedUserRouteChildren {
-  protectedUser_layoutRoute: typeof protectedUser_layoutRoute
-  protectedUserIndexRoute: typeof protectedUserIndexRoute
+interface protectedUserRouteRouteChildren {
+  protectedUserBooksIndexRoute: typeof protectedUserBooksIndexRoute
+  protectedUserLoansIndexRoute: typeof protectedUserLoansIndexRoute
+  protectedUserProfileIndexRoute: typeof protectedUserProfileIndexRoute
+  protectedUserBooksBookIdIndexRoute: typeof protectedUserBooksBookIdIndexRoute
 }
 
-const protectedUserRouteChildren: protectedUserRouteChildren = {
-  protectedUser_layoutRoute: protectedUser_layoutRoute,
-  protectedUserIndexRoute: protectedUserIndexRoute,
+const protectedUserRouteRouteChildren: protectedUserRouteRouteChildren = {
+  protectedUserBooksIndexRoute: protectedUserBooksIndexRoute,
+  protectedUserLoansIndexRoute: protectedUserLoansIndexRoute,
+  protectedUserProfileIndexRoute: protectedUserProfileIndexRoute,
+  protectedUserBooksBookIdIndexRoute: protectedUserBooksBookIdIndexRoute,
 }
 
-const protectedUserRouteWithChildren = protectedUserRoute._addFileChildren(
-  protectedUserRouteChildren,
-)
+const protectedUserRouteRouteWithChildren =
+  protectedUserRouteRoute._addFileChildren(protectedUserRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  protected_layoutRoute: protected_layoutRoute,
-  protectedAdminRoute: protectedAdminRouteWithChildren,
-  protectedUserRoute: protectedUserRouteWithChildren,
+  protectedAdminRouteRoute: protectedAdminRouteRouteWithChildren,
+  protectedUserRouteRoute: protectedUserRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

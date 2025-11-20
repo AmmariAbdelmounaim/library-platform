@@ -10,6 +10,7 @@ export {
 } from './lib/auth-storage';
 export {
   registerSchema,
-  toRegisterDto,
+  loginSchema,
   type RegisterFormData,
+  type LoginFormData,
 } from './lib/schemas';

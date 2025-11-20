@@ -1,10 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/(protected)/__layout')({
-  component: ProtectedLayout,
+export const Route = createFileRoute('/(protected)/admin')({
+  component: AdminLayout,
 });
 
-function ProtectedLayout() {
+function AdminLayout() {
   return (
     <div>
       <Outlet />
