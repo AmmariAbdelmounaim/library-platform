@@ -9,11 +9,9 @@ export const Route = createFileRoute('/')({
   beforeLoad: async () => {
     const token = getAuthToken();
 
-    // Only check authentication if token exists
     if (token) {
       let user;
       const response = await usersControllerGetCurrentUser();
-      // Check if the response is successful (status 200)
       if ('data' in response && response.status === 200) {
         user = response.data;
       }
