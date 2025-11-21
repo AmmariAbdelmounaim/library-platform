@@ -79,6 +79,11 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
       CORS_ORIGIN: ${CORS_ORIGIN:-same-origin}
       JWT_SECRET: ${JWT_SECRET:-jwt-secret}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@library.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      ADMIN_FIRST_NAME: ${ADMIN_FIRST_NAME:-Admin}
+      ADMIN_LAST_NAME: ${ADMIN_LAST_NAME:-User}
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -89,6 +94,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
+        - 'curl -f http://localhost:3000/api || exit 1'
       interval: 30s
       timeout: 10s
       retries: 3

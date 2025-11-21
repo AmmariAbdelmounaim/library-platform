@@ -44,6 +44,9 @@ RUN npm run build:client
 # Stage 3: Runtime
 FROM node:20-alpine AS runtime
 
+# Install curl for healthcheck
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Copy built API from builder stage (includes generated package.json)

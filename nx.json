@@ -29,7 +29,9 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         },
-        "sync": false
+        "sync": {
+          "applyChanges": true
+        }
       }
     },
     {

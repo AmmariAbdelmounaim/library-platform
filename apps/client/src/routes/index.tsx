@@ -2,7 +2,10 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 import { LoginForm } from '@/features/auth/components/login-form';
 import { RegisterForm } from '@/features/auth/components/register-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getAuthToken } from '@/features/auth/lib/auth-storage';
+import {
+  getAuthToken,
+  removeAuthToken,
+} from '@/features/auth/lib/auth-storage';
 import { usersControllerGetCurrentUser } from '@/api/generated/users/users';
 
 export const Route = createFileRoute('/')({
@@ -10,22 +13,37 @@ export const Route = createFileRoute('/')({
     const token = getAuthToken();
 
     if (token) {
-      let user;
-      const response = await usersControllerGetCurrentUser();
-      if ('data' in response && response.status === 200) {
-        user = response.data;
-      }
+      try {
+        const response = await usersControllerGetCurrentUser();
 
-      if (user) {
-        if (user.role === 'ADMIN') {
-          throw redirect({
-            to: '/admin',
-          });
-        } else if (user.role === 'USER') {
-          throw redirect({
-            to: '/user',
-          });
+        // Check if response is successful (200)
+        if ('data' in response && response.status === 200) {
+          const user = response.data;
+
+          if (user) {
+            if (user.role === 'ADMIN') {
+              throw redirect({
+                to: '/admin',
+              });
+            } else if (user.role === 'USER') {
+              throw redirect({
+                to: '/user',
+              });
+            }
+          }
+        } else if (response.status === 401) {
+          removeAuthToken();
         }
+      } catch (error) {
+        if (
+          error &&
+          typeof error === 'object' &&
+          'status' in error &&
+          error?.status === 307
+        ) {
+          throw error;
+        }
+        removeAuthToken();
       }
     }
   },
