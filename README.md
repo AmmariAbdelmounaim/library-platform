@@ -99,16 +99,17 @@ Edit `.env` with your production configuration. The docker-compose file will use
 #### 3. Build and start all services
 
 ```bash
-cd infra
 docker-compose up -d
 ```
 
 This will:
 
-- Build the API and Client applications
+- Build the API and Client applications (multi-stage Docker build)
 - Start PostgreSQL database
 - Start Redis
-- Start the API service (which serves both API and frontend)
+- Start the API service (which serves both API and frontend from a single container)
+
+**Note**: In production, the API serves the built React frontend as static files. The API handles client-side routing by serving `index.html` for non-API routes.
 
 #### 4. Check service status
 
@@ -221,10 +222,11 @@ npm run db:studio  # Opens Drizzle Studio for database management
 
 ## 🐳 Docker Commands
 
+All docker-compose commands should be run from the root directory.
+
 ### Start Services
 
 ```bash
-cd infra
 docker-compose up -d
 ```
 
@@ -260,13 +262,27 @@ docker-compose down -v
 library-platform/
 ├── apps/
 │   ├── api/          # NestJS API backend
-│   └── client/       # React frontend
+│   │   ├── src/      # API source code
+│   │   └── Dockerfile # Multi-stage Dockerfile (builds API + Client)
+│   └── client/       # React frontend (TanStack Router)
+│       ├── src/      # Client source code
+│       └── orval.config.ts # API client generation config
 ├── infra/
 │   ├── database/     # Database migrations and seeds
-│   ├── docker/       # Docker configuration
+│   ├── docker/       # Docker initialization scripts
 │   └── scripts/      # Database management scripts
+├── docker-compose.yml # Docker Compose configuration (root level)
 └── package.json      # Root package.json with workspace scripts
 ```
+
+### Key Features
+
+- **Monorepo**: Uses Nx for managing the monorepo workspace
+- **API**: NestJS backend with Drizzle ORM, JWT authentication, and Swagger documentation
+- **Client**: React frontend with TanStack Router and React Query
+- **Database**: PostgreSQL with Row Level Security (RLS) and migrations
+- **Caching**: Redis for session management and caching
+- **Production**: Single Docker container serves both API and frontend
 
 ---
 
@@ -296,12 +312,41 @@ library-platform/
 
 ---
 
+## 🔧 Technology Stack
+
+### Backend
+
+- **NestJS**: Node.js framework for building scalable server-side applications
+- **Drizzle ORM**: TypeScript ORM for PostgreSQL
+- **PostgreSQL**: Relational database with Row Level Security
+- **Redis**: In-memory data store for caching and sessions
+- **BullMQ**: Job queue for background tasks (e.g., Google Books API integration)
+- **JWT**: Authentication using Passport.js
+- **Swagger/OpenAPI**: API documentation
+
+### Frontend
+
+- **React 19**: UI library
+- **TanStack Router**: Type-safe routing
+- **TanStack Query**: Data fetching and state management
+- **Tailwind CSS**: Utility-first CSS framework
+- **Orval**: Generate TypeScript API client from OpenAPI spec
+- **Vite**: Build tool and dev server
+
+### DevOps
+
+- **Docker**: Containerization
+- **Docker Compose**: Multi-container orchestration
+- **Nx**: Monorepo tooling and build system
+
 ## 📚 Additional Resources
 
 - **API Documentation**: Available at `/api/docs` when the server is running
 - **Nx Documentation**: https://nx.dev
 - **NestJS Documentation**: https://docs.nestjs.com
 - **React Documentation**: https://react.dev
+- **TanStack Router**: https://tanstack.com/router
+- **Drizzle ORM**: https://orm.drizzle.team
 
 ---
 
