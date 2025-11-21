@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import {
+  getLoansControllerFindAllOngoingQueryKey,
   getLoansControllerFindMyOngoingLoansQueryKey,
   useLoansControllerCreate,
   useLoansControllerFindMyOngoingLoans,
@@ -33,6 +34,9 @@ export function LoanBookButton({ bookId }: LoanBookButtonProps) {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
+          });
+          queryClient.invalidateQueries({
+            queryKey: getLoansControllerFindAllOngoingQueryKey(),
           });
           toast.success('Book loaned successfully!');
         },

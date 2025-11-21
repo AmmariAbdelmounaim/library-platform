@@ -15,6 +15,7 @@ import { Route as protectedAdminRouteRouteImport } from './routes/(protected)/ad
 import { Route as protectedUserProfileIndexRouteImport } from './routes/(protected)/user/profile/index'
 import { Route as protectedUserLoansIndexRouteImport } from './routes/(protected)/user/loans/index'
 import { Route as protectedUserBooksIndexRouteImport } from './routes/(protected)/user/books/index'
+import { Route as protectedAdminLoansIndexRouteImport } from './routes/(protected)/admin/loans/index'
 import { Route as protectedAdminBooksIndexRouteImport } from './routes/(protected)/admin/books/index'
 import { Route as protectedAdminAuthorsIndexRouteImport } from './routes/(protected)/admin/authors/index'
 import { Route as protectedUserBooksBookIdIndexRouteImport } from './routes/(protected)/user/books/$bookId/index'
@@ -55,6 +56,12 @@ const protectedUserBooksIndexRoute = protectedUserBooksIndexRouteImport.update({
   path: '/books/',
   getParentRoute: () => protectedUserRouteRoute,
 } as any)
+const protectedAdminLoansIndexRoute =
+  protectedAdminLoansIndexRouteImport.update({
+    id: '/loans/',
+    path: '/loans/',
+    getParentRoute: () => protectedAdminRouteRoute,
+  } as any)
 const protectedAdminBooksIndexRoute =
   protectedAdminBooksIndexRouteImport.update({
     id: '/books/',
@@ -110,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/user': typeof protectedUserRouteRouteWithChildren
   '/admin/authors': typeof protectedAdminAuthorsIndexRoute
   '/admin/books': typeof protectedAdminBooksIndexRoute
+  '/admin/loans': typeof protectedAdminLoansIndexRoute
   '/user/books': typeof protectedUserBooksIndexRoute
   '/user/loans': typeof protectedUserLoansIndexRoute
   '/user/profile': typeof protectedUserProfileIndexRoute
@@ -126,6 +134,7 @@ export interface FileRoutesByTo {
   '/user': typeof protectedUserRouteRouteWithChildren
   '/admin/authors': typeof protectedAdminAuthorsIndexRoute
   '/admin/books': typeof protectedAdminBooksIndexRoute
+  '/admin/loans': typeof protectedAdminLoansIndexRoute
   '/user/books': typeof protectedUserBooksIndexRoute
   '/user/loans': typeof protectedUserLoansIndexRoute
   '/user/profile': typeof protectedUserProfileIndexRoute
@@ -143,6 +152,7 @@ export interface FileRoutesById {
   '/(protected)/user': typeof protectedUserRouteRouteWithChildren
   '/(protected)/admin/authors/': typeof protectedAdminAuthorsIndexRoute
   '/(protected)/admin/books/': typeof protectedAdminBooksIndexRoute
+  '/(protected)/admin/loans/': typeof protectedAdminLoansIndexRoute
   '/(protected)/user/books/': typeof protectedUserBooksIndexRoute
   '/(protected)/user/loans/': typeof protectedUserLoansIndexRoute
   '/(protected)/user/profile/': typeof protectedUserProfileIndexRoute
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/admin/authors'
     | '/admin/books'
+    | '/admin/loans'
     | '/user/books'
     | '/user/loans'
     | '/user/profile'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/admin/authors'
     | '/admin/books'
+    | '/admin/loans'
     | '/user/books'
     | '/user/loans'
     | '/user/profile'
@@ -193,6 +205,7 @@ export interface FileRouteTypes {
     | '/(protected)/user'
     | '/(protected)/admin/authors/'
     | '/(protected)/admin/books/'
+    | '/(protected)/admin/loans/'
     | '/(protected)/user/books/'
     | '/(protected)/user/loans/'
     | '/(protected)/user/profile/'
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/user/books'
       preLoaderRoute: typeof protectedUserBooksIndexRouteImport
       parentRoute: typeof protectedUserRouteRoute
+    }
+    '/(protected)/admin/loans/': {
+      id: '/(protected)/admin/loans/'
+      path: '/loans'
+      fullPath: '/admin/loans'
+      preLoaderRoute: typeof protectedAdminLoansIndexRouteImport
+      parentRoute: typeof protectedAdminRouteRoute
     }
     '/(protected)/admin/books/': {
       id: '/(protected)/admin/books/'
@@ -316,6 +336,7 @@ declare module '@tanstack/react-router' {
 interface protectedAdminRouteRouteChildren {
   protectedAdminAuthorsIndexRoute: typeof protectedAdminAuthorsIndexRoute
   protectedAdminBooksIndexRoute: typeof protectedAdminBooksIndexRoute
+  protectedAdminLoansIndexRoute: typeof protectedAdminLoansIndexRoute
   protectedAdminAuthorsAuthorIdIndexRoute: typeof protectedAdminAuthorsAuthorIdIndexRoute
   protectedAdminAuthorsAddIndexRoute: typeof protectedAdminAuthorsAddIndexRoute
   protectedAdminBooksBookIdIndexRoute: typeof protectedAdminBooksBookIdIndexRoute
@@ -326,6 +347,7 @@ interface protectedAdminRouteRouteChildren {
 const protectedAdminRouteRouteChildren: protectedAdminRouteRouteChildren = {
   protectedAdminAuthorsIndexRoute: protectedAdminAuthorsIndexRoute,
   protectedAdminBooksIndexRoute: protectedAdminBooksIndexRoute,
+  protectedAdminLoansIndexRoute: protectedAdminLoansIndexRoute,
   protectedAdminAuthorsAuthorIdIndexRoute:
     protectedAdminAuthorsAuthorIdIndexRoute,
   protectedAdminAuthorsAddIndexRoute: protectedAdminAuthorsAddIndexRoute,
