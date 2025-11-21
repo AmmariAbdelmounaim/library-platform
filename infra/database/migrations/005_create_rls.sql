@@ -37,6 +37,8 @@ ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE books ENABLE ROW LEVEL SECURITY;
 ALTER TABLE loans ENABLE ROW LEVEL SECURITY;
 ALTER TABLE membership_cards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE authors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE book_authors ENABLE ROW LEVEL SECURITY;
 
 -- Helper function to get app role name (used in policy creation)
 CREATE OR REPLACE FUNCTION get_app_role() RETURNS TEXT AS $$
@@ -198,6 +200,74 @@ BEGIN
         FOR DELETE TO %I 
         USING (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
 END $cards_delete$;
+
+-- ========== AUTHORS RLS POLICIES ==========
+
+-- Anyone can select authors
+DO $authors_select$
+BEGIN
+    EXECUTE format('CREATE POLICY authors_select_all ON authors 
+        FOR SELECT TO %I USING (true)', get_app_role());
+END $authors_select$;
+
+-- Only admins can insert authors
+DO $authors_insert$
+BEGIN
+    EXECUTE format('CREATE POLICY authors_admin_insert ON authors 
+        FOR INSERT TO %I 
+        WITH CHECK (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $authors_insert$;
+
+-- Only admins can update authors
+DO $authors_update$
+BEGIN
+    EXECUTE format('CREATE POLICY authors_admin_update ON authors 
+        FOR UPDATE TO %I 
+        USING (current_setting(''app.current_user_role'', true) = ''ADMIN'')
+        WITH CHECK (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $authors_update$;
+
+-- Only admins can delete authors
+DO $authors_delete$
+BEGIN
+    EXECUTE format('CREATE POLICY authors_admin_delete ON authors 
+        FOR DELETE TO %I 
+        USING (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $authors_delete$;
+
+-- ========== BOOK_AUTHORS RLS POLICIES ==========
+
+-- Anyone can select book_authors
+DO $book_authors_select$
+BEGIN
+    EXECUTE format('CREATE POLICY book_authors_select_all ON book_authors 
+        FOR SELECT TO %I USING (true)', get_app_role());
+END $book_authors_select$;
+
+-- Only admins can insert book_authors
+DO $book_authors_insert$
+BEGIN
+    EXECUTE format('CREATE POLICY book_authors_admin_insert ON book_authors 
+        FOR INSERT TO %I 
+        WITH CHECK (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $book_authors_insert$;
+
+-- Only admins can update book_authors
+DO $book_authors_update$
+BEGIN
+    EXECUTE format('CREATE POLICY book_authors_admin_update ON book_authors 
+        FOR UPDATE TO %I 
+        USING (current_setting(''app.current_user_role'', true) = ''ADMIN'')
+        WITH CHECK (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $book_authors_update$;
+
+-- Only admins can delete book_authors
+DO $book_authors_delete$
+BEGIN
+    EXECUTE format('CREATE POLICY book_authors_admin_delete ON book_authors 
+        FOR DELETE TO %I 
+        USING (current_setting(''app.current_user_role'', true) = ''ADMIN'')', get_app_role());
+END $book_authors_delete$;
 
 -- Clean up helper function
 DROP FUNCTION get_app_role();
