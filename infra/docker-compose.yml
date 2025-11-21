@@ -25,9 +25,6 @@ services:
 
       # Seeds (mounted for init script)
       - ./database/seeds:/docker-entrypoint-initdb.d/seeds:ro
-
-      # Tests (mounted for test runner)
-      - ./database/tests:/tests:ro
     networks:
       - library-network
     healthcheck:
