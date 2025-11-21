@@ -80,12 +80,12 @@ export function BookForm({
     // Clean up empty strings to undefined for optional fields
     const cleanedData: BookFormData = {
       ...data,
-      description: data.description || undefined,
-      genre: data.genre || undefined,
-      isbn13: data.isbn13 || undefined,
-      isbn10: data.isbn10 || undefined,
-      publicationDate: data.publicationDate || undefined,
-      coverImageUrl: data.coverImageUrl || undefined,
+      description: data.description,
+      genre: data.genre,
+      isbn13: data.isbn13,
+      isbn10: data.isbn10,
+      publicationDate: data.publicationDate,
+      coverImageUrl: data.coverImageUrl,
     };
     onSubmit?.(cleanedData);
   };

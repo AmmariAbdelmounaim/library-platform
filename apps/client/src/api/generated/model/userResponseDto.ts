@@ -5,28 +5,25 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { UserResponseDtoEmail } from './userResponseDtoEmail';
-import type { UserResponseDtoFirstName } from './userResponseDtoFirstName';
-import type { UserResponseDtoLastName } from './userResponseDtoLastName';
 import type { UserResponseDtoRole } from './userResponseDtoRole';
 
 export interface UserResponseDto {
   /** User ID */
   id: number;
   /** User email address */
-  email: UserResponseDtoEmail;
+  email: string;
   /**
    * User first name
    * @minLength 2
    * @maxLength 100
    */
-  firstName: UserResponseDtoFirstName;
+  firstName: string;
   /**
    * User last name
    * @minLength 2
    * @maxLength 100
    */
-  lastName: UserResponseDtoLastName;
+  lastName: string;
   /** User role */
   role: UserResponseDtoRole;
   /** User creation timestamp */

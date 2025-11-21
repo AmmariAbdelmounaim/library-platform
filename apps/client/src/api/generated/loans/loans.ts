@@ -7,14 +7,9 @@
  */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseQueryResult,
   MutationFunction,
-  QueryClient,
   QueryFunction,
   QueryKey,
-  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -151,18 +146,15 @@ export type LoansControllerCreateMutationError = ErrorType<void>;
 export const useLoansControllerCreate = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof loansControllerCreate>>,
-      TError,
-      { data: CreateLoanDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof loansControllerCreate>>,
+    TError,
+    { data: CreateLoanDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof loansControllerCreate>>,
   TError,
   { data: CreateLoanDto },
@@ -170,7 +162,7 @@ export const useLoansControllerCreate = <
 > => {
   const mutationOptions = getLoansControllerCreateMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * Retrieve all ongoing loans regardless of user. This operation is restricted to users with ADMIN role only.
@@ -230,12 +222,10 @@ export const getLoansControllerFindAllOngoingQueryOptions = <
   TData = Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
   TError = ErrorType<void>,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-      TError,
-      TData
-    >
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
+    TError,
+    TData
   >;
   request?: SecondParameter<typeof customInstance>;
 }) => {
@@ -253,7 +243,7 @@ export const getLoansControllerFindAllOngoingQueryOptions = <
     Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type LoansControllerFindAllOngoingQueryResult = NonNullable<
@@ -261,76 +251,6 @@ export type LoansControllerFindAllOngoingQueryResult = NonNullable<
 >;
 export type LoansControllerFindAllOngoingQueryError = ErrorType<void>;
 
-export function useLoansControllerFindAllOngoing<
-  TData = Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-  TError = ErrorType<void>,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerFindAllOngoing>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerFindAllOngoing<
-  TData = Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerFindAllOngoing>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerFindAllOngoing<
-  TData = Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get all ongoing loans (Admin only)
  */
@@ -338,27 +258,19 @@ export function useLoansControllerFindAllOngoing<
 export function useLoansControllerFindAllOngoing<
   TData = Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
   TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof loansControllerFindAllOngoing>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getLoansControllerFindAllOngoingQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -478,18 +390,15 @@ export type LoansControllerReturnLoanMutationError = ErrorType<void>;
 export const useLoansControllerReturnLoan = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof loansControllerReturnLoan>>,
-      TError,
-      { id: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof loansControllerReturnLoan>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof loansControllerReturnLoan>>,
   TError,
   { id: number },
@@ -497,7 +406,7 @@ export const useLoansControllerReturnLoan = <
 > => {
   const mutationOptions = getLoansControllerReturnLoanMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * Retrieve all ongoing loans for the current authenticated user. Only available to users with USER role.
@@ -557,12 +466,10 @@ export const getLoansControllerFindMyOngoingLoansQueryOptions = <
   TData = Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
   TError = ErrorType<void>,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-      TError,
-      TData
-    >
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
+    TError,
+    TData
   >;
   request?: SecondParameter<typeof customInstance>;
 }) => {
@@ -580,7 +487,7 @@ export const getLoansControllerFindMyOngoingLoansQueryOptions = <
     Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type LoansControllerFindMyOngoingLoansQueryResult = NonNullable<
@@ -588,76 +495,6 @@ export type LoansControllerFindMyOngoingLoansQueryResult = NonNullable<
 >;
 export type LoansControllerFindMyOngoingLoansQueryError = ErrorType<void>;
 
-export function useLoansControllerFindMyOngoingLoans<
-  TData = Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-  TError = ErrorType<void>,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerFindMyOngoingLoans<
-  TData = Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerFindMyOngoingLoans<
-  TData = Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get my ongoing loans
  */
@@ -665,28 +502,20 @@ export function useLoansControllerFindMyOngoingLoans<
 export function useLoansControllerFindMyOngoingLoans<
   TData = Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
   TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof loansControllerFindMyOngoingLoans>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions =
     getLoansControllerFindMyOngoingLoansQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -776,12 +605,10 @@ export const getLoansControllerSearchLoansQueryOptions = <
 >(
   params?: LoansControllerSearchLoansParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof loansControllerSearchLoans>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -800,7 +627,7 @@ export const getLoansControllerSearchLoansQueryOptions = <
     Awaited<ReturnType<typeof loansControllerSearchLoans>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type LoansControllerSearchLoansQueryResult = NonNullable<
@@ -808,79 +635,6 @@ export type LoansControllerSearchLoansQueryResult = NonNullable<
 >;
 export type LoansControllerSearchLoansQueryError = ErrorType<void>;
 
-export function useLoansControllerSearchLoans<
-  TData = Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-  TError = ErrorType<void>,
->(
-  params: undefined | LoansControllerSearchLoansParams,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerSearchLoans>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerSearchLoans<
-  TData = Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-  TError = ErrorType<void>,
->(
-  params?: LoansControllerSearchLoansParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-          TError,
-          Awaited<ReturnType<typeof loansControllerSearchLoans>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useLoansControllerSearchLoans<
-  TData = Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-  TError = ErrorType<void>,
->(
-  params?: LoansControllerSearchLoansParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Search loans by user or book (Admin only)
  */
@@ -891,28 +645,22 @@ export function useLoansControllerSearchLoans<
 >(
   params?: LoansControllerSearchLoansParams,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof loansControllerSearchLoans>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof loansControllerSearchLoans>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getLoansControllerSearchLoansQueryOptions(
     params,
     options,
   );
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 

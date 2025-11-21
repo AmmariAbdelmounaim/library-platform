@@ -5,15 +5,17 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
+import type { LoanResponseDtoUserId } from './loanResponseDtoUserId';
+import type { LoanResponseDtoBookId } from './loanResponseDtoBookId';
 import type { LoanResponseDtoStatus } from './loanResponseDtoStatus';
 
 export interface LoanResponseDto {
   /** Loan ID */
   id: number;
   /** User ID who borrowed the book */
-  userId: number;
+  userId: LoanResponseDtoUserId;
   /** Book ID that was borrowed */
-  bookId: number;
+  bookId: LoanResponseDtoBookId;
   /** Loan status */
   status: LoanResponseDtoStatus;
   /** Date and time when the book was borrowed */

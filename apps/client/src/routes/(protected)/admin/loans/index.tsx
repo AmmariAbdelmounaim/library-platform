@@ -4,7 +4,10 @@ import {
   AdminLoansTable,
   AdminLoansTableSkeleton,
 } from '@/features/loans/components/admin-loans-table';
-import { useLoansControllerFindAllOngoing } from '@/api/generated/loans/loans';
+import {
+  getLoansControllerFindAllOngoingQueryKey,
+  useLoansControllerFindAllOngoing,
+} from '@/api/generated/loans/loans';
 
 export const Route = createFileRoute('/(protected)/admin/loans/')({
   component: RouteComponent,
@@ -20,6 +23,7 @@ function RouteComponent() {
     refetch,
   } = useLoansControllerFindAllOngoing({
     query: {
+      queryKey: getLoansControllerFindAllOngoingQueryKey(),
       select: (response) => (response.status === 200 ? response.data : []),
     },
   });

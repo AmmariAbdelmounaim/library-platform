@@ -2,7 +2,10 @@ import { createFileRoute } from '@tanstack/react-router';
 
 import { Button } from '@/components/ui/button';
 import { LoansTable, LoansTableSkeleton } from '@/features/loans';
-import { useLoansControllerFindMyOngoingLoans } from '@/api/generated/loans/loans';
+import {
+  getLoansControllerFindMyOngoingLoansQueryKey,
+  useLoansControllerFindMyOngoingLoans,
+} from '@/api/generated/loans/loans';
 
 export const Route = createFileRoute('/(protected)/user/loans/')({
   component: RouteComponent,
@@ -18,6 +21,7 @@ function RouteComponent() {
     refetch,
   } = useLoansControllerFindMyOngoingLoans({
     query: {
+      queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
       select: (response) => (response.status === 200 ? response.data : []),
     },
   });

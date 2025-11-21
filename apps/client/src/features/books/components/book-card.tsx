@@ -9,36 +9,12 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from '@tanstack/react-router';
+import { formatDate } from '../utils';
 
-type BookCardProps = {
+interface BookCardProps {
   book: BookResponseDto;
   className?: string;
-};
-
-const asOptionalString = (value: unknown): string | undefined => {
-  if (typeof value === 'string' && value.trim().length > 0) {
-    return value;
-  }
-  return undefined;
-};
-
-const formatDate = (value?: string) => {
-  if (!value) {
-    return 'Not available';
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(date);
-};
+}
 
 export function BookCard({ book, className }: BookCardProps) {
   const location = useLocation();
@@ -47,12 +23,11 @@ export function BookCard({ book, className }: BookCardProps) {
     ? '/admin/books/$bookId'
     : '/user/books/$bookId';
 
-  const title = asOptionalString(book.title) ?? 'Untitled book';
-  const description =
-    asOptionalString(book.description) ?? 'No description available.';
-  const genre = asOptionalString(book.genre) ?? 'Not available';
+  const title = book.title ?? 'Untitled book';
+  const description = book.description ?? 'No description available.';
+  const genre = book.genre ?? 'Not available';
   const publication = formatDate(book.publicationDate);
-  const coverImageUrl = asOptionalString(book.coverImageUrl);
+  const coverImageUrl = book.coverImageUrl;
   const isbn13 = book.isbn13 ?? 'Not available';
   const isbn10 = book.isbn10 ?? 'Not available';
 

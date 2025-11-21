@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { asOptionalString, formatDate } from '@/features/books';
+import { formatDate } from '@/features/books';
 import { getErrorMessage } from '@/lib/api-errors';
 
 import { useLoanBooks } from '../hooks/use-loan-books';
@@ -117,8 +117,8 @@ export function LoansTable({ loans }: LoansTableProps) {
   const data = useMemo(
     () =>
       loans.map((loan) => {
-        const rawTitle = bookMap.get(loan.bookId)?.title;
-        const title = asOptionalString(rawTitle) ?? 'Loading title…';
+        const rawTitle = bookMap.get(Number(loan.bookId))?.title;
+        const title = rawTitle ?? 'Loading title…';
         return {
           ...loan,
           bookTitle: title,

@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useBooksControllerSearchSimple } from '@/api/generated/books/books';
+import {
+  getBooksControllerSearchSimpleQueryKey,
+  useBooksControllerSearchSimple,
+} from '@/api/generated/books/books';
+import { BookResponseDto } from '@/api/generated/model';
 
 export type BooksSearchFilters = {
   title: string;
@@ -40,16 +44,19 @@ export function useBooksSearch() {
   );
 
   const {
-    data: books = [],
+    data: books,
     isLoading,
     isFetching,
     isError,
     error,
     refetch,
-  } = useBooksControllerSearchSimple(
+  } = useBooksControllerSearchSimple<BookResponseDto[]>(
     hasSearchParams ? normalizedFilters : undefined,
     {
       query: {
+        queryKey: getBooksControllerSearchSimpleQueryKey(
+          hasSearchParams ? normalizedFilters : undefined,
+        ),
         select: (response) => (response.status === 200 ? response.data : []),
       },
     },

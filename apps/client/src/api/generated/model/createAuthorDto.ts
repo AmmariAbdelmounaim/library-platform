@@ -5,21 +5,19 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { CreateAuthorDtoFirstName } from './createAuthorDtoFirstName';
-import type { CreateAuthorDtoLastName } from './createAuthorDtoLastName';
 
 export interface CreateAuthorDto {
   /**
    * Author first name
    * @maxLength 100
    */
-  firstName?: CreateAuthorDtoFirstName;
+  firstName?: string;
   /**
    * Author last name
    * @minLength 1
    * @maxLength 100
    */
-  lastName: CreateAuthorDtoLastName;
+  lastName: string;
   /** Author birth date */
   birthDate?: string;
   /** Author death date */

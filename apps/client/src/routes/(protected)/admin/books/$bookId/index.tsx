@@ -5,8 +5,8 @@ import { toast } from 'sonner';
 import {
   useBooksControllerFindOne,
   useBooksControllerRemove,
-  getBooksControllerFindAllQueryKey,
   getBooksControllerFindOneQueryKey,
+  getBooksControllerSearchSimpleQueryKey,
 } from '@/api/generated/books/books';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +18,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import {
-  asOptionalString,
   BookDetailsCard,
   BookDetailsErrorState,
   BookDetailsSkeleton,
@@ -50,6 +49,7 @@ function RouteComponent() {
   } = useBooksControllerFindOne(numericBookId, {
     query: {
       enabled: isValidBookId,
+      queryKey: getBooksControllerFindOneQueryKey(),
       select: (response) =>
         response.status === 200 ? response.data : undefined,
     },
@@ -59,10 +59,6 @@ function RouteComponent() {
     mutation: {
       onSuccess: (response) => {
         if (response.status === 204) {
-          // Invalidate all book queries
-          queryClient.invalidateQueries({
-            queryKey: getBooksControllerFindAllQueryKey(),
-          });
           queryClient.invalidateQueries({
             queryKey: getBooksControllerFindOneQueryKey(numericBookId),
           });
@@ -73,7 +69,7 @@ function RouteComponent() {
               return (
                 Array.isArray(key) &&
                 key.length > 0 &&
-                key[0] === '/api/books/search/simple'
+                key[0] === getBooksControllerSearchSimpleQueryKey()[0]
               );
             },
           });
@@ -82,7 +78,6 @@ function RouteComponent() {
             description: 'The book has been removed from the library.',
           });
 
-          // Redirect to catalog
           navigate({ to: '/admin/books' });
         }
       },
@@ -102,7 +97,7 @@ function RouteComponent() {
     deleteBookMutation.mutate({ id: numericBookId });
   };
 
-  const title = asOptionalString(book?.title) ?? 'Book details';
+  const title = book?.title ?? 'Book details';
 
   const content = (() => {
     if (!isValidBookId) {

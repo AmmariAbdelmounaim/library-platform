@@ -8,7 +8,6 @@
 import { useMutation } from '@tanstack/react-query';
 import type {
   MutationFunction,
-  QueryClient,
   UseMutationOptions,
   UseMutationResult,
 } from '@tanstack/react-query';
@@ -133,18 +132,15 @@ export type AuthControllerRegisterMutationError = ErrorType<void>;
 export const useAuthControllerRegister = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authControllerRegister>>,
-      TError,
-      { data: RegisterDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerRegister>>,
+    TError,
+    { data: RegisterDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof authControllerRegister>>,
   TError,
   { data: RegisterDto },
@@ -152,7 +148,7 @@ export const useAuthControllerRegister = <
 > => {
   const mutationOptions = getAuthControllerRegisterMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * @summary Login user
@@ -256,18 +252,15 @@ export type AuthControllerLoginMutationError = ErrorType<void>;
 export const useAuthControllerLogin = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authControllerLogin>>,
-      TError,
-      { data: LoginDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authControllerLogin>>,
+    TError,
+    { data: LoginDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof authControllerLogin>>,
   TError,
   { data: LoginDto },
@@ -275,5 +268,5 @@ export const useAuthControllerLogin = <
 > => {
   const mutationOptions = getAuthControllerLoginMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };

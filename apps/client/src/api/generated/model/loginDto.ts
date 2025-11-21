@@ -5,15 +5,13 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { LoginDtoEmail } from './loginDtoEmail';
-import type { LoginDtoPassword } from './loginDtoPassword';
 
 export interface LoginDto {
   /** User email address */
-  email: LoginDtoEmail;
+  email: string;
   /**
    * User password
    * @minLength 8
    */
-  password: LoginDtoPassword;
+  password: string;
 }

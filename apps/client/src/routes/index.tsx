@@ -17,7 +17,7 @@ export const Route = createFileRoute('/')({
         const response = await usersControllerGetCurrentUser();
 
         // Check if response is successful (200)
-        if ('data' in response && response.status === 200) {
+        if (response.status === 200) {
           const user = response.data;
 
           if (user) {

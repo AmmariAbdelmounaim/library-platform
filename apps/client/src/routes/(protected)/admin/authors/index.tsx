@@ -1,11 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AuthorsTable, AuthorsTableSkeleton } from '@/features/authors';
 import {
-  AuthorsTable,
-  AuthorsTableSkeleton,
-} from '@/features/authors';
-import {
+  getAuthorsControllerFindAllQueryKey,
   useAuthorsControllerFindAll,
 } from '@/api/generated/authors/authors';
 
@@ -23,6 +21,7 @@ function RouteComponent() {
     refetch,
   } = useAuthorsControllerFindAll({
     query: {
+      queryKey: getAuthorsControllerFindAllQueryKey(),
       select: (response) => (response.status === 200 ? response.data : []),
     },
   });
@@ -36,7 +35,7 @@ function RouteComponent() {
 
     if (isError) {
       return (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/5 p-6">
+        <div className="border-destructive/50 bg-destructive/5 rounded-lg border p-6">
           <p className="text-destructive font-semibold">
             Failed to load authors
           </p>
@@ -45,11 +44,7 @@ function RouteComponent() {
               ? error.message
               : 'An unexpected error occurred.'}
           </p>
-          <Button
-            variant="outline"
-            onClick={() => refetch()}
-            className="mt-4"
-          >
+          <Button variant="outline" onClick={() => refetch()} className="mt-4">
             Try again
           </Button>
         </div>

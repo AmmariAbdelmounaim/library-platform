@@ -7,8 +7,12 @@ import {
   useBooksControllerUpdate,
   getBooksControllerFindAllQueryKey,
   getBooksControllerFindOneQueryKey,
+  getBooksControllerSearchSimpleQueryKey,
 } from '@/api/generated/books/books';
-import { useAuthorsControllerFindAll } from '@/api/generated/authors/authors';
+import {
+  getAuthorsControllerFindAllQueryKey,
+  useAuthorsControllerFindAll,
+} from '@/api/generated/authors/authors';
 import { getErrorMessage } from '@/lib/api-errors';
 import type { BookFormData } from '@/features/books/lib/schemas';
 import type { UpdateBookDto } from '@/api/generated/model';
@@ -33,6 +37,7 @@ function RouteComponent() {
   } = useBooksControllerFindOne(numericBookId, {
     query: {
       enabled: isValidBookId,
+      queryKey: getBooksControllerFindOneQueryKey(),
       select: (response) =>
         response.status === 200 ? response.data : undefined,
     },
@@ -42,6 +47,7 @@ function RouteComponent() {
   const { data: authorsResponse, isLoading: isLoadingAuthors } =
     useAuthorsControllerFindAll({
       query: {
+        queryKey: getAuthorsControllerFindAllQueryKey(),
         select: (response) => (response.status === 200 ? response.data : []),
       },
     });
@@ -65,7 +71,7 @@ function RouteComponent() {
               return (
                 Array.isArray(key) &&
                 key.length > 0 &&
-                key[0] === '/api/books/search/simple'
+                key[0] === getBooksControllerSearchSimpleQueryKey()
               );
             },
           });
@@ -89,37 +95,28 @@ function RouteComponent() {
     if (!isValidBookId) return;
 
     const updateBookDto: UpdateBookDto = {
-      title: data.title as unknown as UpdateBookDto['title'],
-      description: data.description
-        ? (data.description as unknown as UpdateBookDto['description'])
-        : undefined,
-      genre: data.genre
-        ? (data.genre as unknown as UpdateBookDto['genre'])
-        : undefined,
-      isbn10: data.isbn10 || undefined,
-      isbn13: data.isbn13 || undefined,
-      publicationDate: data.publicationDate || undefined,
-      coverImageUrl: data.coverImageUrl
-        ? (data.coverImageUrl as unknown as UpdateBookDto['coverImageUrl'])
-        : undefined,
+      title: data.title,
+      description: data.description,
+      genre: data.genre,
+      isbn10: data.isbn10,
+      isbn13: data.isbn13,
+      publicationDate: data.publicationDate,
+      coverImageUrl: data.coverImageUrl,
     };
 
     updateBookMutation.mutate({ id: numericBookId, data: updateBookDto });
   };
 
-  // Transform book data to form default values
-  const defaultValues: Partial<BookFormData> | undefined = book
-    ? {
-        title: String(book.title) || '',
-        description: book.description ? String(book.description) : '',
-        genre: book.genre ? String(book.genre) : '',
-        isbn10: book.isbn10 || '',
-        isbn13: book.isbn13 || '',
-        publicationDate: book.publicationDate || '',
-        authorIds: book.authors?.map((author) => author.id) || [],
-        coverImageUrl: book.coverImageUrl ? String(book.coverImageUrl) : '',
-      }
-    : undefined;
+  const defaultValues: Partial<BookFormData> = {
+    title: book?.title || '',
+    description: book?.description || '',
+    genre: book?.genre || '',
+    isbn10: book?.isbn10 || '',
+    isbn13: book?.isbn13 || '',
+    publicationDate: book?.publicationDate || '',
+    authorIds: book?.authors?.map((author) => author.id) || [],
+    coverImageUrl: book?.coverImageUrl || '',
+  };
 
   if (!isValidBookId) {
     return (

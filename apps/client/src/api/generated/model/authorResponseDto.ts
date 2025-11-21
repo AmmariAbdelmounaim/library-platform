@@ -5,8 +5,6 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { AuthorResponseDtoFirstName } from './authorResponseDtoFirstName';
-import type { AuthorResponseDtoLastName } from './authorResponseDtoLastName';
 
 export interface AuthorResponseDto {
   /** Author ID */
@@ -15,13 +13,13 @@ export interface AuthorResponseDto {
    * Author first name
    * @maxLength 100
    */
-  firstName?: AuthorResponseDtoFirstName;
+  firstName?: string;
   /**
    * Author last name
    * @minLength 1
    * @maxLength 100
    */
-  lastName: AuthorResponseDtoLastName;
+  lastName: string;
   /** Author birth date */
   birthDate?: string;
   /** Author death date */

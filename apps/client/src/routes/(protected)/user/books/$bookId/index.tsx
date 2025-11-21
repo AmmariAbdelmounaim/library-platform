@@ -1,13 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 
 import { Button } from '@/components/ui/button';
-import { useBooksControllerFindOne } from '@/api/generated/books/books';
+import {
+  getBooksControllerFindOneQueryKey,
+  useBooksControllerFindOne,
+} from '@/api/generated/books/books';
 import {
   BookDetailsCard,
   BookDetailsErrorState,
   BookDetailsSkeleton,
   InvalidBookIdState,
-  asOptionalString,
 } from '@/features/books';
 import { LoanBookButton } from '@/features/loans';
 
@@ -30,14 +32,13 @@ function RouteComponent() {
   } = useBooksControllerFindOne(numericBookId, {
     query: {
       enabled: isValidBookId,
+      queryKey: getBooksControllerFindOneQueryKey(),
       select: (response) =>
         response.status === 200 ? response.data : undefined,
     },
   });
 
-  const title = book
-    ? (asOptionalString(book.title) ?? 'Book details')
-    : 'Book details';
+  const title = book?.title || 'Book details';
 
   const content = (() => {
     if (!isValidBookId) {

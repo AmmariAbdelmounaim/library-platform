@@ -5,12 +5,6 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { BookWithAuthorsDtoTitle } from './bookWithAuthorsDtoTitle';
-import type { BookWithAuthorsDtoGenre } from './bookWithAuthorsDtoGenre';
-import type { BookWithAuthorsDtoDescription } from './bookWithAuthorsDtoDescription';
-import type { BookWithAuthorsDtoCoverImageUrl } from './bookWithAuthorsDtoCoverImageUrl';
-import type { BookWithAuthorsDtoExternalSource } from './bookWithAuthorsDtoExternalSource';
-import type { BookWithAuthorsDtoExternalId } from './bookWithAuthorsDtoExternalId';
 import type { BookWithAuthorsDtoExternalMetadata } from './bookWithAuthorsDtoExternalMetadata';
 import type { AuthorResponseDto } from './authorResponseDto';
 
@@ -22,7 +16,7 @@ export interface BookWithAuthorsDto {
    * @minLength 1
    * @maxLength 255
    */
-  title: BookWithAuthorsDtoTitle;
+  title: string;
   /**
    * ISBN-10 identifier
    * @maxLength 10
@@ -37,23 +31,23 @@ export interface BookWithAuthorsDto {
    * Book genre
    * @maxLength 100
    */
-  genre?: BookWithAuthorsDtoGenre;
+  genre?: string;
   /** Publication date */
   publicationDate?: string;
   /** Book description */
-  description?: BookWithAuthorsDtoDescription;
+  description?: string;
   /** Cover image URL */
-  coverImageUrl?: BookWithAuthorsDtoCoverImageUrl;
+  coverImageUrl?: string;
   /**
    * External source name
    * @maxLength 100
    */
-  externalSource?: BookWithAuthorsDtoExternalSource;
+  externalSource?: string;
   /**
    * External source ID
    * @maxLength 255
    */
-  externalId?: BookWithAuthorsDtoExternalId;
+  externalId?: string;
   /** External metadata (JSON) */
   externalMetadata?: BookWithAuthorsDtoExternalMetadata;
   /** Book creation timestamp */

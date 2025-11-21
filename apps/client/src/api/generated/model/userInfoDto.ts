@@ -5,28 +5,25 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { UserInfoDtoEmail } from './userInfoDtoEmail';
-import type { UserInfoDtoFirstName } from './userInfoDtoFirstName';
-import type { UserInfoDtoLastName } from './userInfoDtoLastName';
 import type { UserInfoDtoRole } from './userInfoDtoRole';
 
 export interface UserInfoDto {
   /** User ID */
   id: number;
   /** User email address */
-  email: UserInfoDtoEmail;
+  email: string;
   /**
    * User first name
    * @minLength 2
    * @maxLength 100
    */
-  firstName: UserInfoDtoFirstName;
+  firstName: string;
   /**
    * User last name
    * @minLength 2
    * @maxLength 100
    */
-  lastName: UserInfoDtoLastName;
+  lastName: string;
   /** User role */
   role: UserInfoDtoRole;
 }

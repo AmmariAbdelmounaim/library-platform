@@ -22,7 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { LoginDto } from '@/api/generated/model';
 import { getErrorMessage } from '@/lib/api-errors';
 
 export function LoginForm() {
@@ -31,15 +30,15 @@ export function LoginForm() {
     mutation: {
       onSuccess: (response) => {
         // Check if the response is successful (status 200)
-        if ('data' in response && response.status === 200) {
+        if (response.status === 200) {
           const { accessToken, user } = response.data;
           // Store JWT token in localStorage
           setAuthToken(accessToken);
           // Navigate based on user role
           if (user.role === 'ADMIN') {
-            navigate({ to: '/admin' as any });
+            navigate({ to: '/admin' });
           } else {
-            navigate({ to: '/user' as any });
+            navigate({ to: '/user' });
           }
         }
       },
@@ -62,7 +61,7 @@ export function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    loginMutation.mutate({ data: data as unknown as LoginDto });
+    loginMutation.mutate({ data });
   };
 
   const errorMessage = getErrorMessage(loginMutation.error);

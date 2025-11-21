@@ -5,21 +5,19 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { UpdateAuthorDtoFirstName } from './updateAuthorDtoFirstName';
-import type { UpdateAuthorDtoLastName } from './updateAuthorDtoLastName';
 
 export interface UpdateAuthorDto {
   /**
    * Author first name
    * @maxLength 100
    */
-  firstName?: UpdateAuthorDtoFirstName;
+  firstName?: string;
   /**
    * Author last name
    * @minLength 1
    * @maxLength 100
    */
-  lastName?: UpdateAuthorDtoLastName;
+  lastName?: string;
   /** Author birth date */
   birthDate?: string;
   /** Author death date */

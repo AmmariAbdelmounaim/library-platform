@@ -22,7 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { RegisterDto } from '@/api/generated/model';
 import { getErrorMessage } from '@/lib/api-errors';
 
 export function RegisterForm() {
@@ -31,7 +30,7 @@ export function RegisterForm() {
     mutation: {
       onSuccess: (response) => {
         // Check if the response is successful (status 201)
-        if ('data' in response && response.status === 201) {
+        if (response.status === 201) {
           const { accessToken } = response.data;
           // Store JWT token in localStorage
           setAuthToken(accessToken);
@@ -59,8 +58,7 @@ export function RegisterForm() {
   });
 
   const onSubmit = (data: RegisterFormData) => {
-    // const registerDto = toRegisterDto(data);
-    registerMutation.mutate({ data: data as unknown as RegisterDto });
+    registerMutation.mutate({ data });
   };
 
   const errorMessage = getErrorMessage(registerMutation.error);

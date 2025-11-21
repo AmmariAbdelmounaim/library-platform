@@ -7,14 +7,9 @@
  */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseQueryResult,
   MutationFunction,
-  QueryClient,
   QueryFunction,
   QueryKey,
-  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -82,12 +77,10 @@ export const getUsersControllerGetCurrentUserQueryOptions = <
   TData = Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
   TError = ErrorType<void>,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-      TError,
-      TData
-    >
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
+    TError,
+    TData
   >;
   request?: SecondParameter<typeof customInstance>;
 }) => {
@@ -105,7 +98,7 @@ export const getUsersControllerGetCurrentUserQueryOptions = <
     Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type UsersControllerGetCurrentUserQueryResult = NonNullable<
@@ -113,76 +106,6 @@ export type UsersControllerGetCurrentUserQueryResult = NonNullable<
 >;
 export type UsersControllerGetCurrentUserQueryError = ErrorType<void>;
 
-export function useUsersControllerGetCurrentUser<
-  TData = Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-  TError = ErrorType<void>,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-          TError,
-          Awaited<ReturnType<typeof usersControllerGetCurrentUser>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersControllerGetCurrentUser<
-  TData = Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-          TError,
-          Awaited<ReturnType<typeof usersControllerGetCurrentUser>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersControllerGetCurrentUser<
-  TData = Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get current authenticated user
  */
@@ -190,27 +113,19 @@ export function useUsersControllerGetCurrentUser<
 export function useUsersControllerGetCurrentUser<
   TData = Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
   TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof usersControllerGetCurrentUser>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getUsersControllerGetCurrentUserQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -284,12 +199,10 @@ export const getUsersControllerFindOneQueryOptions = <
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerFindOne>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindOne>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -312,7 +225,7 @@ export const getUsersControllerFindOneQueryOptions = <
     Awaited<ReturnType<typeof usersControllerFindOne>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type UsersControllerFindOneQueryResult = NonNullable<
@@ -320,79 +233,6 @@ export type UsersControllerFindOneQueryResult = NonNullable<
 >;
 export type UsersControllerFindOneQueryError = ErrorType<void>;
 
-export function useUsersControllerFindOne<
-  TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerFindOne>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersControllerFindOne>>,
-          TError,
-          Awaited<ReturnType<typeof usersControllerFindOne>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersControllerFindOne<
-  TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerFindOne>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersControllerFindOne>>,
-          TError,
-          Awaited<ReturnType<typeof usersControllerFindOne>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersControllerFindOne<
-  TData = Awaited<ReturnType<typeof usersControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerFindOne>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get user by ID
  */
@@ -403,25 +243,19 @@ export function useUsersControllerFindOne<
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof usersControllerFindOne>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof usersControllerFindOne>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getUsersControllerFindOneQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -550,18 +384,15 @@ export type UsersControllerUpdateMutationError = ErrorType<void>;
 export const useUsersControllerUpdate = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof usersControllerUpdate>>,
-      TError,
-      { id: number; data: UpdateUserDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersControllerUpdate>>,
+    TError,
+    { id: number; data: UpdateUserDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof usersControllerUpdate>>,
   TError,
   { id: number; data: UpdateUserDto },
@@ -569,7 +400,7 @@ export const useUsersControllerUpdate = <
 > => {
   const mutationOptions = getUsersControllerUpdateMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * Delete a user by ID. This operation is restricted to users with ADMIN role only.
@@ -678,18 +509,15 @@ export type UsersControllerRemoveMutationError = ErrorType<void>;
 export const useUsersControllerRemove = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof usersControllerRemove>>,
-      TError,
-      { id: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof usersControllerRemove>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof usersControllerRemove>>,
   TError,
   { id: number },
@@ -697,5 +525,5 @@ export const useUsersControllerRemove = <
 > => {
   const mutationOptions = getUsersControllerRemoveMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };

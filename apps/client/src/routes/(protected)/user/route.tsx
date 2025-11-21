@@ -13,8 +13,7 @@ export const Route = createFileRoute('/(protected)/user')({
 
     try {
       const response = await usersControllerGetCurrentUser();
-      const user =
-        'data' in response && response.status === 200 ? response.data : null;
+      const user = response.status === 200 ? response.data : null;
 
       // If 401, clear token and redirect to login
       if (response.status === 401) {

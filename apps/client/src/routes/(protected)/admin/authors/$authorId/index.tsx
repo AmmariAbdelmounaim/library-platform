@@ -34,6 +34,7 @@ function RouteComponent() {
   } = useAuthorsControllerFindOne(numericAuthorId, {
     query: {
       enabled: isValidAuthorId,
+      queryKey: getAuthorsControllerFindOneQueryKey(),
       select: (response) =>
         response.status === 200 ? response.data : undefined,
     },
@@ -80,14 +81,11 @@ function RouteComponent() {
   const handleSubmit = (data: AuthorFormData) => {
     if (!author) return;
 
-    // Convert AuthorFormData to UpdateAuthorDto
     const updateAuthorDto: UpdateAuthorDto = {
-      firstName: data.firstName
-        ? (data.firstName as unknown as UpdateAuthorDto['firstName'])
-        : undefined,
-      lastName: data.lastName as unknown as UpdateAuthorDto['lastName'],
-      birthDate: data.birthDate || undefined,
-      deathDate: data.deathDate || undefined,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      birthDate: data.birthDate,
+      deathDate: data.deathDate,
     };
 
     updateAuthorMutation.mutate({ id: numericAuthorId, data: updateAuthorDto });
@@ -127,8 +125,8 @@ function RouteComponent() {
   }
 
   const defaultFormValues: Partial<AuthorFormData> = {
-    firstName: typeof author.firstName === 'string' ? author.firstName : '',
-    lastName: typeof author.lastName === 'string' ? author.lastName : '',
+    firstName: author.firstName || '',
+    lastName: author.lastName || '',
     birthDate: author.birthDate || '',
     deathDate: author.deathDate || '',
   };

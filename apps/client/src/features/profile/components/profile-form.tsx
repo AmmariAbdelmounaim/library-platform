@@ -20,12 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardDescription, CardHeader } from '@/components/ui/card';
 import { getErrorMessage } from '@/lib/api-errors';
 import { profileSchema, type ProfileFormData } from '../lib/schemas';
 
@@ -36,6 +31,7 @@ export function ProfileForm() {
   const { data: userResponse, isLoading: isLoadingUser } =
     useUsersControllerGetCurrentUser({
       query: {
+        queryKey: getUsersControllerGetCurrentUserQueryKey(),
         select: (response) => (response.status === 200 ? response.data : null),
       },
     });

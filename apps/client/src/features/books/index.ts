@@ -20,11 +20,9 @@ export {
   type BooksSearchFilters,
 } from './hooks/use-books-search';
 export {
-  asOptionalString,
   formatAuthorLifespan,
   formatAuthorName,
   formatDate,
-  formatDateTime,
   formatMetadataValue,
 } from './utils';
 export { BookForm, type BookFormProps } from './components/book-form';

@@ -7,8 +7,6 @@
  */
 
 /**
- * Author last name
- * @minLength 1
- * @maxLength 100
+ * User ID who borrowed the book
  */
-export type UpdateAuthorDtoLastName = { [key: string]: unknown };
+export type LoanResponseDtoUserId = { [key: string]: unknown };

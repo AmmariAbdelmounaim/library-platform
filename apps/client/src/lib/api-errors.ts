@@ -1,12 +1,5 @@
 import type { ErrorType } from '@/api/axios-instance';
 
-/**
- * Extract error message from API error response
- * Handles NestJS error format and validation errors
- * 
- * @param error - The error from the API call
- * @returns The error message string, or null if no message can be extracted
- */
 export function getErrorMessage(
   error: ErrorType<unknown> | null | undefined,
 ): string | null {
@@ -29,4 +22,3 @@ export function getErrorMessage(
 
   return null;
 }
-

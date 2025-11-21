@@ -4,15 +4,14 @@ import { useQueries } from '@tanstack/react-query';
 
 import {
   getUsersControllerFindOneQueryOptions,
+  getUsersControllerFindOneQueryKey,
   type usersControllerFindOneResponse200,
 } from '@/api/generated/users/users';
 import type { LoanResponseDto } from '@/api/generated/model';
 
 export function useLoanUsers(loans: LoanResponseDto[]) {
   const uniqueUserIds = useMemo(() => {
-    const ids = loans
-      .map((loan) => loan.userId)
-      .filter((userId): userId is number => typeof userId === 'number');
+    const ids = loans.map((loan) => loan.userId);
     return Array.from(new Set(ids));
   }, [loans]);
 
@@ -21,8 +20,9 @@ export function useLoanUsers(loans: LoanResponseDto[]) {
       uniqueUserIds.length === 0
         ? []
         : uniqueUserIds.map((userId) =>
-            getUsersControllerFindOneQueryOptions(userId, {
+            getUsersControllerFindOneQueryOptions(Number(userId), {
               query: {
+                queryKey: getUsersControllerFindOneQueryKey(Number(userId)),
                 select: (response) =>
                   response.status === 200 ? response.data : undefined,
                 staleTime: 1000 * 60 * 5,
@@ -44,7 +44,7 @@ export function useLoanUsers(loans: LoanResponseDto[]) {
     return uniqueUserIds.reduce((acc, userId, index) => {
       const data = userDataArray[index];
       if (data) {
-        acc.set(userId, data);
+        acc.set(Number(userId), data);
       }
       return acc;
     }, new Map<number, usersControllerFindOneResponse200['data']>());

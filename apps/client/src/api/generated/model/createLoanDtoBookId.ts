@@ -7,7 +7,6 @@
  */
 
 /**
- * Author first name
- * @maxLength 100
+ * Book ID to borrow
  */
-export type UpdateAuthorDtoFirstName = { [key: string]: unknown };
+export type CreateLoanDtoBookId = { [key: string]: unknown };

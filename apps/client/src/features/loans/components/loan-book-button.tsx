@@ -8,24 +8,26 @@ import {
   useLoansControllerFindMyOngoingLoans,
   useLoansControllerReturnLoan,
 } from '@/api/generated/loans/loans';
-import { Button } from '@/components/ui/button';
 import { getErrorMessage } from '@/lib/api-errors';
+import { CreateLoanDtoBookId, LoanResponseDto } from '@/api/generated/model';
+import { Button } from '@/components/ui/button';
 
 interface LoanBookButtonProps {
-  bookId: number;
+  bookId: number | CreateLoanDtoBookId;
 }
 
 export function LoanBookButton({ bookId }: LoanBookButtonProps) {
   const queryClient = useQueryClient();
 
   const { data: loans = [], isLoading: isLoadingLoans } =
-    useLoansControllerFindMyOngoingLoans({
+    useLoansControllerFindMyOngoingLoans<LoanResponseDto[]>({
       query: {
+        queryKey: getLoansControllerFindMyOngoingLoansQueryKey(),
         select: (response) => (response.status === 200 ? response.data : []),
       },
     });
 
-  const currentLoan = loans.find((loan) => loan.bookId === bookId);
+  const currentLoan = loans.find((loan) => Number(loan.bookId) === bookId);
   const isLoaned = !!currentLoan;
 
   const { mutate: createLoan, isPending: isCreating } =
@@ -79,7 +81,7 @@ export function LoanBookButton({ bookId }: LoanBookButtonProps) {
       // Loan the book
       createLoan({
         data: {
-          bookId,
+          bookId: bookId as CreateLoanDtoBookId,
         },
       });
     }

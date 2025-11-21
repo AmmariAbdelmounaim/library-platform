@@ -4,15 +4,14 @@ import { useQueries } from '@tanstack/react-query';
 
 import {
   getBooksControllerFindOneQueryOptions,
+  getBooksControllerFindOneQueryKey,
   type booksControllerFindOneResponse200,
 } from '@/api/generated/books/books';
 import type { LoanResponseDto } from '@/api/generated/model';
 
 export function useLoanBooks(loans: LoanResponseDto[]) {
   const uniqueBookIds = useMemo(() => {
-    const ids = loans
-      .map((loan) => loan.bookId)
-      .filter((bookId): bookId is number => typeof bookId === 'number');
+    const ids = loans.map((loan) => loan.bookId);
     return Array.from(new Set(ids));
   }, [loans]);
 
@@ -21,8 +20,9 @@ export function useLoanBooks(loans: LoanResponseDto[]) {
       uniqueBookIds.length === 0
         ? []
         : uniqueBookIds.map((bookId) =>
-            getBooksControllerFindOneQueryOptions(bookId, {
+            getBooksControllerFindOneQueryOptions(Number(bookId), {
               query: {
+                queryKey: getBooksControllerFindOneQueryKey(Number(bookId)),
                 select: (response) =>
                   response.status === 200 ? response.data : undefined,
                 staleTime: 1000 * 60 * 5,
@@ -44,7 +44,7 @@ export function useLoanBooks(loans: LoanResponseDto[]) {
     return uniqueBookIds.reduce((acc, bookId, index) => {
       const data = bookDataArray[index];
       if (data) {
-        acc.set(bookId, data);
+        acc.set(Number(bookId), data);
       }
       return acc;
     }, new Map<number, booksControllerFindOneResponse200['data']>());

@@ -5,29 +5,25 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { UpdateUserDtoEmail } from './updateUserDtoEmail';
-import type { UpdateUserDtoFirstName } from './updateUserDtoFirstName';
-import type { UpdateUserDtoLastName } from './updateUserDtoLastName';
-import type { UpdateUserDtoPassword } from './updateUserDtoPassword';
 
 export interface UpdateUserDto {
   /** User email address */
-  email?: UpdateUserDtoEmail;
+  email?: string;
   /**
    * User first name
    * @minLength 2
    * @maxLength 100
    */
-  firstName?: UpdateUserDtoFirstName;
+  firstName?: string;
   /**
    * User last name
    * @minLength 2
    * @maxLength 100
    */
-  lastName?: UpdateUserDtoLastName;
+  lastName?: string;
   /**
    * User password
    * @minLength 8
    */
-  password?: UpdateUserDtoPassword;
+  password?: string;
 }

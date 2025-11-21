@@ -5,12 +5,6 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { UpdateBookDtoTitle } from './updateBookDtoTitle';
-import type { UpdateBookDtoGenre } from './updateBookDtoGenre';
-import type { UpdateBookDtoDescription } from './updateBookDtoDescription';
-import type { UpdateBookDtoCoverImageUrl } from './updateBookDtoCoverImageUrl';
-import type { UpdateBookDtoExternalSource } from './updateBookDtoExternalSource';
-import type { UpdateBookDtoExternalId } from './updateBookDtoExternalId';
 import type { UpdateBookDtoExternalMetadata } from './updateBookDtoExternalMetadata';
 
 export interface UpdateBookDto {
@@ -19,7 +13,7 @@ export interface UpdateBookDto {
    * @minLength 1
    * @maxLength 255
    */
-  title?: UpdateBookDtoTitle;
+  title?: string;
   /**
    * ISBN-10 identifier
    * @maxLength 10
@@ -34,23 +28,23 @@ export interface UpdateBookDto {
    * Book genre
    * @maxLength 100
    */
-  genre?: UpdateBookDtoGenre;
+  genre?: string;
   /** Publication date */
   publicationDate?: string;
   /** Book description */
-  description?: UpdateBookDtoDescription;
+  description?: string;
   /** Cover image URL */
-  coverImageUrl?: UpdateBookDtoCoverImageUrl;
+  coverImageUrl?: string;
   /**
    * External source name
    * @maxLength 100
    */
-  externalSource?: UpdateBookDtoExternalSource;
+  externalSource?: string;
   /**
    * External source ID
    * @maxLength 255
    */
-  externalId?: UpdateBookDtoExternalId;
+  externalId?: string;
   /** External metadata (JSON) */
   externalMetadata?: UpdateBookDtoExternalMetadata;
 }

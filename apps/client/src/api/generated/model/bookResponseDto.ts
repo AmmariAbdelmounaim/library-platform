@@ -5,12 +5,6 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { BookResponseDtoTitle } from './bookResponseDtoTitle';
-import type { BookResponseDtoGenre } from './bookResponseDtoGenre';
-import type { BookResponseDtoDescription } from './bookResponseDtoDescription';
-import type { BookResponseDtoCoverImageUrl } from './bookResponseDtoCoverImageUrl';
-import type { BookResponseDtoExternalSource } from './bookResponseDtoExternalSource';
-import type { BookResponseDtoExternalId } from './bookResponseDtoExternalId';
 import type { BookResponseDtoExternalMetadata } from './bookResponseDtoExternalMetadata';
 
 export interface BookResponseDto {
@@ -21,7 +15,7 @@ export interface BookResponseDto {
    * @minLength 1
    * @maxLength 255
    */
-  title: BookResponseDtoTitle;
+  title: string;
   /**
    * ISBN-10 identifier
    * @maxLength 10
@@ -36,23 +30,23 @@ export interface BookResponseDto {
    * Book genre
    * @maxLength 100
    */
-  genre?: BookResponseDtoGenre;
+  genre?: string;
   /** Publication date */
   publicationDate?: string;
   /** Book description */
-  description?: BookResponseDtoDescription;
+  description?: string;
   /** Cover image URL */
-  coverImageUrl?: BookResponseDtoCoverImageUrl;
+  coverImageUrl?: string;
   /**
    * External source name
    * @maxLength 100
    */
-  externalSource?: BookResponseDtoExternalSource;
+  externalSource?: string;
   /**
    * External source ID
    * @maxLength 255
    */
-  externalId?: BookResponseDtoExternalId;
+  externalId?: string;
   /** External metadata (JSON) */
   externalMetadata?: BookResponseDtoExternalMetadata;
   /** Book creation timestamp */

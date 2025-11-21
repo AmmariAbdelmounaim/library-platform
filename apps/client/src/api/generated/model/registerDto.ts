@@ -5,29 +5,25 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { RegisterDtoEmail } from './registerDtoEmail';
-import type { RegisterDtoFirstName } from './registerDtoFirstName';
-import type { RegisterDtoLastName } from './registerDtoLastName';
-import type { RegisterDtoPassword } from './registerDtoPassword';
 
 export interface RegisterDto {
   /** User email address */
-  email: RegisterDtoEmail;
+  email: string;
   /**
    * User first name
    * @minLength 2
    * @maxLength 100
    */
-  firstName: RegisterDtoFirstName;
+  firstName: string;
   /**
    * User last name
    * @minLength 2
    * @maxLength 100
    */
-  lastName: RegisterDtoLastName;
+  lastName: string;
   /**
    * User password
    * @minLength 8
    */
-  password: RegisterDtoPassword;
+  password: string;
 }

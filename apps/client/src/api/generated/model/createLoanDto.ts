@@ -5,10 +5,11 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
+import type { CreateLoanDtoBookId } from './createLoanDtoBookId';
 
 export interface CreateLoanDto {
   /** Book ID to borrow */
-  bookId: number;
+  bookId: CreateLoanDtoBookId;
   /** Due date for returning the book (optional, defaults to 21 days from now) */
   dueAt?: string;
 }

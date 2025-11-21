@@ -5,10 +5,12 @@ import { BookForm } from '@/features/books';
 import { createFileRoute } from '@tanstack/react-router';
 import {
   useBooksControllerCreate,
-  getBooksControllerFindAllQueryKey,
   getBooksControllerSearchSimpleQueryKey,
 } from '@/api/generated/books/books';
-import { useAuthorsControllerFindAll } from '@/api/generated/authors/authors';
+import {
+  getAuthorsControllerFindByBookIdQueryKey,
+  useAuthorsControllerFindAll,
+} from '@/api/generated/authors/authors';
 import { getErrorMessage } from '@/lib/api-errors';
 import type { BookFormData } from '@/features/books/lib/schemas';
 import type { CreateBookDto } from '@/api/generated/model';
@@ -25,28 +27,25 @@ function RouteComponent() {
   const { data: authorsResponse, isLoading: isLoadingAuthors } =
     useAuthorsControllerFindAll({
       query: {
+        queryKey: getAuthorsControllerFindByBookIdQueryKey(),
         select: (response) => (response.status === 200 ? response.data : []),
       },
     });
 
   const authors = authorsResponse || [];
 
-  // Create book mutation
   const createBookMutation = useBooksControllerCreate({
     mutation: {
       onSuccess: (response) => {
         if (response.status === 201 && response.data) {
-          // Invalidate books list to refresh the catalog
           queryClient.invalidateQueries({
             queryKey: getBooksControllerSearchSimpleQueryKey(),
           });
 
-          // Show success toast
           toast.success('Book created successfully!', {
             description: `"${response.data.title}" has been added to the library.`,
           });
 
-          // Navigate to the books catalog
           navigate({ to: '/admin/books' });
         }
       },
@@ -61,23 +60,14 @@ function RouteComponent() {
   });
 
   const handleSubmit = (data: BookFormData) => {
-    // Convert BookFormData to CreateBookDto
-    // Note: authorIds are not included in CreateBookDto, so we'll skip them for now
-    // Authors association might need to be handled separately
     const createBookDto: CreateBookDto = {
-      title: data.title as unknown as CreateBookDto['title'],
-      description: data.description
-        ? (data.description as unknown as CreateBookDto['description'])
-        : undefined,
-      genre: data.genre
-        ? (data.genre as unknown as CreateBookDto['genre'])
-        : undefined,
-      isbn10: data.isbn10 || undefined,
-      isbn13: data.isbn13 || undefined,
-      publicationDate: data.publicationDate || undefined,
-      coverImageUrl: data.coverImageUrl
-        ? (data.coverImageUrl as unknown as CreateBookDto['coverImageUrl'])
-        : undefined,
+      title: data.title,
+      description: data.description,
+      genre: data.genre,
+      isbn10: data.isbn10,
+      isbn13: data.isbn13,
+      publicationDate: data.publicationDate,
+      coverImageUrl: data.coverImageUrl,
     };
 
     createBookMutation.mutate({ data: createBookDto });

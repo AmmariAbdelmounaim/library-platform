@@ -7,14 +7,9 @@
  */
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseQueryResult,
   MutationFunction,
-  QueryClient,
   QueryFunction,
   QueryKey,
-  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -146,18 +141,15 @@ export type AuthorsControllerCreateMutationError = ErrorType<void>;
 export const useAuthorsControllerCreate = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authorsControllerCreate>>,
-      TError,
-      { data: CreateAuthorDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authorsControllerCreate>>,
+    TError,
+    { data: CreateAuthorDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof authorsControllerCreate>>,
   TError,
   { data: CreateAuthorDto },
@@ -165,7 +157,7 @@ export const useAuthorsControllerCreate = <
 > => {
   const mutationOptions = getAuthorsControllerCreateMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * Retrieve a list of all authors. This operation is restricted to users with ADMIN role only.
@@ -225,12 +217,10 @@ export const getAuthorsControllerFindAllQueryOptions = <
   TData = Awaited<ReturnType<typeof authorsControllerFindAll>>,
   TError = ErrorType<void>,
 >(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof authorsControllerFindAll>>,
-      TError,
-      TData
-    >
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof authorsControllerFindAll>>,
+    TError,
+    TData
   >;
   request?: SecondParameter<typeof customInstance>;
 }) => {
@@ -247,7 +237,7 @@ export const getAuthorsControllerFindAllQueryOptions = <
     Awaited<ReturnType<typeof authorsControllerFindAll>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type AuthorsControllerFindAllQueryResult = NonNullable<
@@ -255,76 +245,6 @@ export type AuthorsControllerFindAllQueryResult = NonNullable<
 >;
 export type AuthorsControllerFindAllQueryError = ErrorType<void>;
 
-export function useAuthorsControllerFindAll<
-  TData = Awaited<ReturnType<typeof authorsControllerFindAll>>,
-  TError = ErrorType<void>,
->(
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindAll>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindAll>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindAll>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindAll<
-  TData = Awaited<ReturnType<typeof authorsControllerFindAll>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindAll>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindAll>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindAll>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindAll<
-  TData = Awaited<ReturnType<typeof authorsControllerFindAll>>,
-  TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get all authors
  */
@@ -332,27 +252,19 @@ export function useAuthorsControllerFindAll<
 export function useAuthorsControllerFindAll<
   TData = Awaited<ReturnType<typeof authorsControllerFindAll>>,
   TError = ErrorType<void>,
->(
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof authorsControllerFindAll>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAuthorsControllerFindAllQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -420,12 +332,10 @@ export const getAuthorsControllerFindByBookIdQueryOptions = <
 >(
   bookId: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -449,7 +359,7 @@ export const getAuthorsControllerFindByBookIdQueryOptions = <
     Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type AuthorsControllerFindByBookIdQueryResult = NonNullable<
@@ -457,79 +367,6 @@ export type AuthorsControllerFindByBookIdQueryResult = NonNullable<
 >;
 export type AuthorsControllerFindByBookIdQueryError = ErrorType<void>;
 
-export function useAuthorsControllerFindByBookId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-  TError = ErrorType<void>,
->(
-  bookId: number,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindByBookId>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindByBookId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-  TError = ErrorType<void>,
->(
-  bookId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindByBookId>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindByBookId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-  TError = ErrorType<void>,
->(
-  bookId: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get authors by book ID
  */
@@ -540,28 +377,22 @@ export function useAuthorsControllerFindByBookId<
 >(
   bookId: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindByBookId>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAuthorsControllerFindByBookIdQueryOptions(
     bookId,
     options,
   );
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -631,12 +462,10 @@ export const getAuthorsControllerFindBooksByAuthorIdQueryOptions = <
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -661,7 +490,7 @@ export const getAuthorsControllerFindBooksByAuthorIdQueryOptions = <
     Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type AuthorsControllerFindBooksByAuthorIdQueryResult = NonNullable<
@@ -669,79 +498,6 @@ export type AuthorsControllerFindBooksByAuthorIdQueryResult = NonNullable<
 >;
 export type AuthorsControllerFindBooksByAuthorIdQueryError = ErrorType<void>;
 
-export function useAuthorsControllerFindBooksByAuthorId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindBooksByAuthorId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindBooksByAuthorId<
-  TData = Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get books written by an author
  */
@@ -752,28 +508,22 @@ export function useAuthorsControllerFindBooksByAuthorId<
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindBooksByAuthorId>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAuthorsControllerFindBooksByAuthorIdQueryOptions(
     id,
     options,
   );
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -841,12 +591,10 @@ export const getAuthorsControllerFindOneQueryOptions = <
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindOne>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindOne>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
@@ -870,7 +618,7 @@ export const getAuthorsControllerFindOneQueryOptions = <
     Awaited<ReturnType<typeof authorsControllerFindOne>>,
     TError,
     TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  > & { queryKey: QueryKey };
 };
 
 export type AuthorsControllerFindOneQueryResult = NonNullable<
@@ -878,79 +626,6 @@ export type AuthorsControllerFindOneQueryResult = NonNullable<
 >;
 export type AuthorsControllerFindOneQueryError = ErrorType<void>;
 
-export function useAuthorsControllerFindOne<
-  TData = Awaited<ReturnType<typeof authorsControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options: {
-    query: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindOne>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindOne>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindOne>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindOne<
-  TData = Awaited<ReturnType<typeof authorsControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindOne>>,
-        TError,
-        TData
-      >
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof authorsControllerFindOne>>,
-          TError,
-          Awaited<ReturnType<typeof authorsControllerFindOne>>
-        >,
-        'initialData'
-      >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useAuthorsControllerFindOne<
-  TData = Awaited<ReturnType<typeof authorsControllerFindOne>>,
-  TError = ErrorType<void>,
->(
-  id: number,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindOne>>,
-        TError,
-        TData
-      >
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
 /**
  * @summary Get author by ID
  */
@@ -961,25 +636,19 @@ export function useAuthorsControllerFindOne<
 >(
   id: number,
   options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof authorsControllerFindOne>>,
-        TError,
-        TData
-      >
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof authorsControllerFindOne>>,
+      TError,
+      TData
     >;
     request?: SecondParameter<typeof customInstance>;
   },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getAuthorsControllerFindOneQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
 
   query.queryKey = queryOptions.queryKey;
 
@@ -1102,18 +771,15 @@ export type AuthorsControllerUpdateMutationError = ErrorType<void>;
 export const useAuthorsControllerUpdate = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authorsControllerUpdate>>,
-      TError,
-      { id: number; data: UpdateAuthorDto },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authorsControllerUpdate>>,
+    TError,
+    { id: number; data: UpdateAuthorDto },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof authorsControllerUpdate>>,
   TError,
   { id: number; data: UpdateAuthorDto },
@@ -1121,7 +787,7 @@ export const useAuthorsControllerUpdate = <
 > => {
   const mutationOptions = getAuthorsControllerUpdateMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };
 /**
  * Delete an author by ID. This operation is restricted to users with ADMIN role only.
@@ -1230,18 +896,15 @@ export type AuthorsControllerRemoveMutationError = ErrorType<void>;
 export const useAuthorsControllerRemove = <
   TError = ErrorType<void>,
   TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof authorsControllerRemove>>,
-      TError,
-      { id: number },
-      TContext
-    >;
-    request?: SecondParameter<typeof customInstance>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof authorsControllerRemove>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationResult<
   Awaited<ReturnType<typeof authorsControllerRemove>>,
   TError,
   { id: number },
@@ -1249,5 +912,5 @@ export const useAuthorsControllerRemove = <
 > => {
   const mutationOptions = getAuthorsControllerRemoveMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+  return useMutation(mutationOptions);
 };

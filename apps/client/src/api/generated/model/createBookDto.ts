@@ -5,12 +5,6 @@
  * API documentation for the Library Platform
  * OpenAPI spec version: 1.0
  */
-import type { CreateBookDtoTitle } from './createBookDtoTitle';
-import type { CreateBookDtoGenre } from './createBookDtoGenre';
-import type { CreateBookDtoDescription } from './createBookDtoDescription';
-import type { CreateBookDtoCoverImageUrl } from './createBookDtoCoverImageUrl';
-import type { CreateBookDtoExternalSource } from './createBookDtoExternalSource';
-import type { CreateBookDtoExternalId } from './createBookDtoExternalId';
 import type { CreateBookDtoExternalMetadata } from './createBookDtoExternalMetadata';
 
 export interface CreateBookDto {
@@ -19,7 +13,7 @@ export interface CreateBookDto {
    * @minLength 1
    * @maxLength 255
    */
-  title: CreateBookDtoTitle;
+  title: string;
   /**
    * ISBN-10 identifier
    * @maxLength 10
@@ -34,23 +28,23 @@ export interface CreateBookDto {
    * Book genre
    * @maxLength 100
    */
-  genre?: CreateBookDtoGenre;
+  genre?: string;
   /** Publication date */
   publicationDate?: string;
   /** Book description */
-  description?: CreateBookDtoDescription;
+  description?: string;
   /** Cover image URL */
-  coverImageUrl?: CreateBookDtoCoverImageUrl;
+  coverImageUrl?: string;
   /**
    * External source name
    * @maxLength 100
    */
-  externalSource?: CreateBookDtoExternalSource;
+  externalSource?: string;
   /**
    * External source ID
    * @maxLength 255
    */
-  externalId?: CreateBookDtoExternalId;
+  externalId?: string;
   /** External metadata (JSON) */
   externalMetadata?: CreateBookDtoExternalMetadata;
 }

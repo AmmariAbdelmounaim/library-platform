@@ -7,7 +7,6 @@
  */
 
 /**
- * External source ID
- * @maxLength 255
+ * Book ID that was borrowed
  */
-export type BookWithAuthorsDtoExternalId = { [key: string]: unknown };
+export type LoanResponseDtoBookId = { [key: string]: unknown };

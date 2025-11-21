@@ -14,7 +14,6 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import {
-  asOptionalString,
   formatAuthorLifespan,
   formatAuthorName,
   formatDate,
@@ -27,14 +26,13 @@ type BookDetailsProps = {
 };
 
 export function BookDetailsCard({ book, isRefreshing }: BookDetailsProps) {
-  const title = asOptionalString(book.title) ?? 'Untitled book';
-  const description =
-    asOptionalString(book.description) ?? 'No description available.';
-  const coverImageUrl = asOptionalString(book.coverImageUrl);
+  const title = book.title ?? 'Untitled book';
+  const description = book.description ?? 'No description available.';
+  const coverImageUrl = book.coverImageUrl;
   const publication = formatDate(book.publicationDate);
-  const genre = asOptionalString(book.genre) ?? 'Not available';
-  const isbn13 = asOptionalString(book.isbn13) ?? 'Not available';
-  const isbn10 = asOptionalString(book.isbn10) ?? 'Not available';
+  const genre = book.genre ?? 'Not available';
+  const isbn13 = book.isbn13 ?? 'Not available';
+  const isbn10 = book.isbn10 ?? 'Not available';
   const externalSource = formatMetadataValue(book.externalSource);
   const externalId = formatMetadataValue(book.externalId);
   const externalMetadata = formatMetadataValue(book.externalMetadata);
@@ -194,10 +192,10 @@ export function BookDetailsSkeleton() {
   );
 }
 
-type BookDetailsErrorStateProps = {
+interface BookDetailsErrorStateProps {
   message: string;
   onRetry: () => Promise<unknown>;
-};
+}
 
 export function BookDetailsErrorState({
   message,

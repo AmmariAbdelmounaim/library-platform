@@ -20,14 +20,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { useBooksControllerCreateFromGoogleBooks } from '@/api/generated/books/books';
+import {
+  getBooksControllerSearchSimpleQueryKey,
+  useBooksControllerCreateFromGoogleBooks,
+} from '@/api/generated/books/books';
 import { getErrorMessage } from '@/lib/api-errors';
 
-type BooksCatalogProps = {
+interface BooksCatalogProps {
   title?: string;
   description?: string;
   withAddBook?: boolean;
-};
+}
 
 export function BooksCatalog({
   title = 'Library catalog',
@@ -52,7 +55,7 @@ export function BooksCatalog({
   const createFromGoogleMutation = useBooksControllerCreateFromGoogleBooks({
     mutation: {
       onSuccess: (response) => {
-        if (response.status === 201 && response.data) {
+        if (response.status === 201) {
           // Invalidate search queries
           queryClient.invalidateQueries({
             predicate: (query) => {
@@ -60,7 +63,7 @@ export function BooksCatalog({
               return (
                 Array.isArray(key) &&
                 key.length > 0 &&
-                key[0] === '/api/books/search/simple'
+                key[0] === getBooksControllerSearchSimpleQueryKey()[0]
               );
             },
           });
@@ -120,11 +123,11 @@ export function BooksCatalog({
       );
     }
 
-    if (books.length === 0) {
+    if (books && books.length === 0) {
       return <BooksEmptyState />;
     }
 
-    return <BooksGrid books={books} />;
+    return <BooksGrid books={books!} />;
   })();
 
   return (

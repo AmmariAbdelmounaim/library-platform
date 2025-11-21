@@ -11,7 +11,7 @@ import {
 import type { LoanResponseDto } from '@/api/generated/model';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { asOptionalString, formatDate } from '@/features/books';
+import { formatDate } from '@/features/books';
 
 import { useLoanBooks } from '../hooks/use-loan-books';
 import { useLoanUsers } from '../hooks/use-loan-users';
@@ -39,10 +39,10 @@ export function AdminLoansTable({ loans }: AdminLoansTableProps) {
       if (!user) {
         return 'Loading...';
       }
-      const firstName = asOptionalString(user.firstName) ?? '';
-      const lastName = asOptionalString(user.lastName) ?? '';
+      const firstName = user.firstName ?? '';
+      const lastName = user.lastName ?? '';
       const name = [firstName, lastName].filter(Boolean).join(' ');
-      return name || asOptionalString(user.email) || 'Unknown User';
+      return name || user.email || 'Unknown User';
     },
     [userMap],
   );
@@ -147,10 +147,10 @@ export function AdminLoansTable({ loans }: AdminLoansTableProps) {
   const data = useMemo(
     () =>
       loans.map((loan) => {
-        const rawTitle = bookMap.get(loan.bookId)?.title;
-        const title = asOptionalString(rawTitle) ?? 'Loading title…';
+        const rawTitle = bookMap.get(Number(loan.bookId))?.title;
+        const title = rawTitle ?? 'Loading title…';
         const userName = loan.userId
-          ? getUserName(loan.userId)
+          ? getUserName(loan.userId as unknown as number)
           : 'Unknown user';
         return {
           ...loan,
